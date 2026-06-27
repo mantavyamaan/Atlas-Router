@@ -328,8 +328,3 @@ Every routing decision includes
 - Decision Intelligence
 - LLM Orchestration
 
-
-
-BS Mathematics, IIT Bombay
-
-Interested in Decision Intelligence, Artificial Intelligence, Optimization, and Large Language Models.
