@@ -2,6 +2,8 @@
 
 An intelligent LLM routing engine that dynamically selects and orchestrates the optimal AI model workflow using task analysis, policy enforcement, runtime telemetry, and multi-objective optimization.
 
+**Note:** "Atlas Router does not require an LLM for routing. A structured-output LLM can optionally replace the heuristic parser to improve task understanding, but the routing, scoring, policy evaluation, confidence estimation, and planning remain deterministic and model-agnostic."
+
 ---
 
 ## Overview
