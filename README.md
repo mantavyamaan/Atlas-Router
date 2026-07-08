@@ -1,17 +1,26 @@
-# Atlas Router V2 – Intelligent LLM Routing Control Plane
+# Atlas Router – Intelligent LLM Routing Control Plane
 
 A production-oriented LLM routing control plane that intelligently selects and orchestrates the optimal AI model workflow using structured task understanding, policy enforcement, runtime telemetry, Bayesian quality estimation, and multi-objective optimization.
 
-> **V2 Web-Ready Architecture:** Atlas Router V2 has been completely re-architected as a zero-dependency, mathematically deterministic engine. All heavy data-science libraries (`numpy`, `pandas`) have been stripped out and replaced with a custom Pseudo-Random Number Generator (PRNG) and standard Python mathematics (`math`, `statistics`). This allows the entire Bayesian confidence simulation and routing pipeline to be ported 1-to-1 into **Vanilla JavaScript** for execution entirely inside the browser on static websites.
+---
+
+## 🚀 The Architecture (V1 vs V2)
+
+This repository contains two distinct implementations of the Atlas Router to suit different deployment needs:
+
+### **V1: Data-Science Prototyping (`ATLAS_Router.ipynb`)**
+The original prototyping engine built with standard data-science libraries (`numpy`, `pandas`). It excels at rapid iteration, tabular data visualization, and mathematical experimentation using compiled C-backend statistics.
+
+### **V2: Web-Ready Pure Math (`ATLAS_Router_V2.py` / `.ipynb`)**
+A zero-dependency, mathematically deterministic engine. All heavy data-science libraries have been stripped out and replaced with a custom Pseudo-Random Number Generator (PRNG) and standard Python mathematics (`math`, `statistics`). This allows the entire Bayesian confidence simulation and routing pipeline to be ported 1-to-1 into **Vanilla JavaScript** for execution entirely inside the browser on static websites.
 
 ---
 
-## 🚀 Key V2 Upgrades
+## 🧠 101-Model 2026 Registry
 
-- **Pure-Math Thompson Sampling:** Replaced `numpy.random.beta` with a custom linear congruential generator and inverse-gamma approximations to calculate Bayesian confidence intervals without external dependencies.
-- **101-Model 2026 Registry:** Fully expanded registry featuring 101 cutting-edge frontier and open-weight models (including `GPT-5.5`, `Claude-Opus-4.8`, `Gemini-3.1-Pro`, `Llama-4-Maverick`, `DeepSeek-V4-Pro`, and `o3`) parameterized with 2026-era 10M+ context windows.
-- **Domain Specialization:** Hardcoded performance multipliers organically skew routing paths based on expertise (e.g., routing math tasks to `DeepSeek-R1` and audio tasks to `Gemini-3.1-Pro`).
-- **Terminal-Safe Output:** Cleaned text encodings and deterministic string-formatting tables for flawless execution on any system.
+Both V1 and V2 pull from a centralized `model_registry.py` featuring 101 cutting-edge frontier and open-weight models (including `GPT-5.5`, `Claude-Opus-4.8`, `Gemini-3.1-Pro`, `Llama-4-Maverick`, `DeepSeek-V4-Pro`, and `o3`).
+- **2026-Era Specs**: Models are parameterized with up to 10M+ context windows.
+- **Domain Specialization**: Hardcoded performance multipliers organically skew routing paths based on expertise (e.g., routing math tasks to `DeepSeek-R1` and audio tasks to `Gemini-3.1-Pro`).
 
 ---
 
@@ -31,55 +40,14 @@ The router supports both **single-model execution** and **multi-stage orchestrat
 
 ---
 
-# Core Features
+# Core Routing Pipeline
 
-- **Web-Ready Architecture:** Pure-Python implementation designed for easy JavaScript translation.
-- **Canonical Schema-Driven Model Registry:** 101 state-of-the-art models mapped with complex performance curves.
-- **Hard Feasibility Filtering:** Automatically filters models that cannot meet minimum context windows or policy rules.
-- **Bayesian Contextual Quality Estimation:** Evaluates historical priors, task fit, domain expertise, and runtime telemetry.
-- **Pareto-Optimal Candidate Reduction:** Dominated candidates are instantly removed before heavy simulation.
-- **Multi-Objective Utility Optimization:** Balances cost, latency, safety, and reasoning capability dynamically.
-- **Thompson-Sampling Confidence Estimation:** Determines if the system should escalate the decision to human review based on uncertainty variance.
-- **Multi-Stage Workflow Planning:** Generates fallback chains and automated verifier nodes for high-risk scenarios.
-
----
-
-# High-Level Architecture
-
-```text
-                     User Request
-              (Prompt + Constraints)
-                       │
-                       ▼
-  Deterministic + Structured Task Parsing
-                       │
-                       ▼
-      Unified Task Representation
-                       │
-                       ▼
-       Hard Feasibility Filtering
-                       │
-                       ▼
-           Policy Engine
-                       │
-                       ▼
-  Bayesian Contextual Quality Estimation
-                       │
-                       ▼
-       Runtime Telemetry Adjustment
-                       │
-                       ▼
-       Pareto Candidate Reduction
-                       │
-                       ▼
-      Multi-Objective Optimization
-                       │
-                       ▼
-  Execution & Verification Planner
-                       │
-                       ▼
-       Final Routing Decision
-```
+1. **Hard Feasibility Filtering:** Automatically filters models that cannot meet minimum context windows or policy rules.
+2. **Bayesian Contextual Quality Estimation:** Evaluates historical priors, task fit, domain expertise, and runtime telemetry.
+3. **Pareto-Optimal Candidate Reduction:** Dominated candidates are instantly removed before heavy simulation.
+4. **Multi-Objective Utility Optimization:** Balances cost, latency, safety, and reasoning capability dynamically.
+5. **Thompson-Sampling Confidence Estimation:** Determines if the system should escalate the decision to human review based on uncertainty variance.
+6. **Multi-Stage Workflow Planning:** Generates fallback chains and automated verifier nodes for high-risk scenarios.
 
 ---
 
@@ -115,8 +83,6 @@ Every routing decision includes:
 
 # Technologies
 
-- **Python** (Standard Libraries Only: `math`, `statistics`, `json`)
-- **Bayesian Statistics** (Gamma / Beta Distributions)
-- **Multi-Objective Optimization**
-- **Decision Intelligence**
-- **Web-Ready / Vanilla JS Portable**
+- **V1:** Python, NumPy, Pandas, Dataclasses
+- **V2:** Pure Python (Zero dependencies, Web-Ready)
+- **Math:** Bayesian Statistics (Gamma / Beta Distributions), Multi-Objective Optimization
