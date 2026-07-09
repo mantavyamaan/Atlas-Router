@@ -112,9 +112,9 @@ SUPPORTED_FORMATS = [
     "text", "image", "pdf", "audio", "video", "spreadsheet", "presentation"
 ]
 
-CONFIDENCE_ABSTAIN_THRESHOLD = 0.40
-CONFIDENCE_ESCALATE_THRESHOLD = 0.55
-CONFIDENCE_HIGH_THRESHOLD = 0.75
+CONFIDENCE_ABSTAIN_THRESHOLD = 0.20
+CONFIDENCE_ESCALATE_THRESHOLD = 0.20
+CONFIDENCE_HIGH_THRESHOLD = 0.45
 
 Models = {
     'OpenAI': [
@@ -242,7 +242,7 @@ class RequestConstraints:
     allowed_tiers: List[str] = field(default_factory=list)
     no_open_weight: bool = False
     no_web_access: bool = False
-    min_confidence: float = 0.55
+    min_confidence: float = 0.20
     required_region: Optional[str] = None
     privacy_class: str = "standard"
     must_use_single_model: bool = False
@@ -398,12 +398,30 @@ TASK_FAMILY_SIGNAL_MAP: Dict[str, Dict[str, float]] = {
     "audio": {
         "perf:audio_understanding": 0.60, "perf:summarization": 0.20,
         "perf:instruction_following": 0.20
+    },
+    "creative": {
+        "perf:creative_writing": 0.40, "perf:instruction_following": 0.25,
+        "perf:reasoning": 0.15, "perf:vision_understanding": 0.20
+    },
+    "research": {
+        "perf:reasoning": 0.30, "perf:long_context": 0.20,
+        "perf:instruction_following": 0.20, "perf:summarization": 0.15,
+        "perf:scientific_reasoning": 0.15
+    },
+    "education": {
+        "perf:instruction_following": 0.35, "perf:reasoning": 0.25,
+        "perf:creative_writing": 0.20, "perf:scientific_reasoning": 0.20
+    },
+    "data_analysis": {
+        "perf:reasoning": 0.30, "perf:coding": 0.25,
+        "perf:table_understanding": 0.20, "perf:mathematics": 0.15,
+        "perf:instruction_following": 0.10
     }
 }
 
 DOMAIN_SAFETY_MAP: Dict[str, str] = {
     "medical": "medical", "legal": "legal", "finance": "finance",
-    "security": "cybersecurity", "general": "general",
+    "security": "cybersecurity", "sensitive": "sensitive", "general": "general",
     "software": "general", "science": "general", "research": "general",
     "education": "general", "mathematics": "general",
     "customer_support": "general"
@@ -411,9 +429,10 @@ DOMAIN_SAFETY_MAP: Dict[str, str] = {
 
 DOMAIN_EXPERTISE_MAP: Dict[str, str] = {
     "medical": "medical", "legal": "legal", "finance": "finance",
-    "security": "software", "software": "software", "science": "science",
-    "research": "research", "education": "education", "general": "general",
-    "mathematics": "mathematics", "customer_support": "customer_support"
+    "security": "software", "sensitive": "general", "software": "software",
+    "science": "science", "research": "research", "education": "education",
+    "general": "general", "mathematics": "mathematics",
+    "customer_support": "customer_support"
 }
 
 
@@ -778,6 +797,14 @@ def infer_topic(preview: Optional[str]) -> Optional[str]:
 def deterministic_extract(prompt: str, input_formats: List[str], estimated_tokens: int) -> Dict[str, Any]:
     p = prompt.lower()
     required_formats = sorted(set(input_formats) | {"text"})
+    
+    if any(k in p for k in ["image of", "picture of", "photo of", "generate an image", "draw", "render", "3d model", "cad", "obj file", "stl"]):
+        if "image" not in required_formats: required_formats.append("image")
+    if any(k in p for k in ["video of", "generate a video", "create a video", "animation", "animate"]):
+        if "video" not in required_formats: required_formats.append("video")
+    if any(k in p for k in ["generate music", "compose a song", "text to speech", "voiceover", "audiobook"]):
+        if "audio" not in required_formats: required_formats.append("audio")
+        
     return {
         "required_formats": required_formats,
         "requires_json": any(k in p for k in ["return json", "respond in json", "json output", "json schema", "structured json"]),
@@ -831,40 +858,64 @@ def fallback_structured_semantic_parse(
         primary = "document_qa"
         secondary = ["reasoning"]
         reason_parts.append("Spreadsheet analysis pattern detected.")
-    elif any(k in p for k in ["python", "bug", "debug", "algorithm", "implement", "code", "sql", "function", "class"]):
+    elif any(k in p for k in ["python", "bug", "debug", "algorithm", "implement", "code", "sql", "function", "class", "website", "html", "css", "javascript", "react", "frontend", "backend", "script", "ui/ux", "app"]):
         primary = "coding"
         reason_parts.append("Coding intent detected.")
+    elif any(k in p for k in ["automate", "scrape", "bot", "agent", "orchestrate", "multi-step plan", "workflow", "autonomous"]):
+        primary = "agent"
+        reason_parts.append("Agentic orchestration intent detected.")
     elif any(k in p for k in ["prove", "integral", "equation", "theorem", "calculate", "derivative"]):
         primary = "mathematics"
         reason_parts.append("Mathematical reasoning detected.")
-    elif any(k in p for k in ["translate"]):
+    elif any(k in p for k in ["translate", "spanish", "french", "language", "localization"]):
         primary = "translation"
         reason_parts.append("Translation intent detected.")
-    elif any(k in p for k in ["agent", "orchestrate", "multi-step plan", "workflow", "autonomous"]):
-        primary = "agent"
-        reason_parts.append("Agentic orchestration intent detected.")
     elif any(k in p for k in ["analyze", "derive", "compare", "reason", "evaluate", "assess"]):
         primary = "reasoning"
         reason_parts.append("General reasoning pattern detected.")
+    elif any(k in p for k in ["image of", "picture of", "photo of", "generate an image", "draw", "video of", "generate a video", "create a video", "animation", "animate", "3d model", "cad", "obj file", "stl", "render", "generate music", "compose a song", "text to speech", "voiceover", "audiobook"]):
+        primary = "creative"
+        reason_parts.append("Multimodal generation or creative intent detected.")
+    elif any(k in p for k in ["roleplay", "pretend to be", "game", "text adventure", "dnd", "dungeons and dragons"]):
+        primary = "creative"
+        reason_parts.append("Roleplay or gaming intent detected.")
+    elif any(k in p for k in ["write a blog", "essay", "marketing", "copywriting", "story", "generate an article", "email template", "newsletter", "cover letter", "resume", "poem"]):
+        primary = "creative"
+        reason_parts.append("Creative writing or drafting intent detected.")
+    elif any(k in p for k in ["search", "research", "find information", "latest news", "current events", "who is", "what happened"]):
+        primary = "research"
+        reason_parts.append("Web search or research intent detected.")
+    elif any(k in p for k in ["explain", "teach me", "how does", "tutorial", "learn", "for a 5 year old", "what is"]):
+        primary = "education"
+        reason_parts.append("Educational or tutoring intent detected.")
+    elif any(k in p for k in ["data", "csv", "analytics", "metrics", "chart", "graph"]):
+        primary = "data_analysis"
+        reason_parts.append("Data analysis intent detected.")
+    elif any(k in p for k in ["tl;dr", "tldr", "summarize this", "bullet points", "key takeaways"]):
+        primary = "summarization"
+        reason_parts.append("Standalone summarization intent detected.")
     else:
         primary = "chat"
         reason_parts.append("Defaulting to conversational task.")
     # Domain, risk tier, risk type detection
-    if any(k in p for k in ["medical", "diagnosis", "patient", "treatment", "symptom", "chest pain", "clinical"]):
+    if any(k in p for k in ["medical", "diagnosis", "patient", "treatment", "symptom", "chest pain", "clinical", "prescription", "side effects", "disease", "therapy", "mental health", "depressed", "anxious", "suicidal", "need to talk", "lonely"]):
         domain, risk_tier, risk_type = "medical", "high", "regulated_advice"
         document_type = "medical_record"
-    elif any(k in p for k in ["legal", "contract", "compliance", "law", "litigation", "obligation", "clause"]):
+    elif any(k in p for k in ["legal", "contract", "compliance", "law", "litigation", "obligation", "clause", "sue", "lawsuit", "court", "attorney", "nda", "terms of service"]):
         domain, risk_tier, risk_type = "legal", "high", "regulated_advice"
         document_type = "contract"
-    elif any(k in p for k in ["finance", "tax", "investment", "trading", "portfolio", "stock"]):
+    elif any(k in p for k in ["finance", "tax", "investment", "trading", "portfolio", "stock", "crypto", "bitcoin", "mortgage", "loan", "interest rate"]):
         domain, risk_tier, risk_type = "finance", "high", "regulated_advice"
         document_type = "financial_document"
-    elif any(k in p for k in ["security", "vulnerability", "exploit", "incident", "breach"]):
+    elif any(k in p for k in ["security", "vulnerability", "exploit", "incident", "breach", "ddos", "phishing", "malware", "ransomware", "bypass", "hack"]):
         domain, risk_tier, risk_type = "security", "high", "security_sensitive"
         document_type = "security_report"
+    elif any(k in p for k in ["trump", "biden", "epstein", "election", "politics", "controversy", "nsfw", "porn", "violence", "kill", "bomb", "weapon", "illegal", "suicide", "self-harm", "drugs", "erotica", "sex", "nude", "naked", "fetish", "murder", "terrorist"]):
+        domain, risk_tier, risk_type = "sensitive", "high", "safety_sensitive"
+        document_type = "controversial"
     elif "support ticket" in p or "customer" in p or "refund" in p:
         domain, risk_tier, risk_type = "customer_support", "low", "standard"
-        document_type = "support_record"
+        document_type = "support_record" 
     elif primary in ("coding", "agent"):
         domain, risk_tier, risk_type = "software", "medium", "operational"
     elif primary in ("reasoning", "mathematics"):
@@ -950,7 +1001,8 @@ def fallback_structured_semantic_parse(
 def validate_structured_parse(data: StructuredSemanticParse) -> StructuredSemanticParse:
     allowed_families = {
         "coding", "reasoning", "mathematics", "chat", "vision",
-        "ocr", "document_qa", "summarization", "translation", "agent", "audio"
+        "ocr", "document_qa", "summarization", "translation", "agent", "audio",
+        "creative", "research", "education", "data_analysis"
     }
     if data.primary_family not in allowed_families:
         raise ValueError(f"Invalid primary family: {data.primary_family}")
@@ -988,14 +1040,43 @@ def parse_with_llm_interface(
     )
 
 
-def infer_workflow_profile(primary_family: str, domain: str, input_formats: List[str], prompt: str) -> str:
+def infer_workflow_profile(
+    primary_family: str,
+    domain: str,
+    input_formats: List[str],
+    prompt: str,
+    complexity: str = "low",
+    risk_tier: str = "low",
+) -> str:
+    """Map task signals to an optimal weight profile.
+
+    Priority: quality > riskfit > reliability > uncertainty > latency > runtime > cost
+    High-risk and complex tasks always escalate to quality-dominant profiles.
+    """
     p = prompt.lower()
-    if "support" in p or domain == "customer_support":
-        return "customer_support_summarization"
-    if domain == "legal" and "contract" in p:
-        return "contract_review_intake"
+    # ── Hard escalations: risk and complexity override everything ─────────────
+    if risk_tier == "high":
+        if domain == "legal" and "contract" in p:
+            return "contract_review_intake"
+        return "high_risk"
+    if complexity == "high":
+        return "complex_reasoning"
+    # ── Domain-based quality profiles ─────────────────────────────────────────
+    if domain in {"legal", "medical", "finance", "security"}:
+        if domain == "legal" and "contract" in p:
+            return "contract_review_intake"
+        return "quality_first"
+    if complexity == "medium":
+        return "research_drafting"
+    # ── Task-family profiles ───────────────────────────────────────────────────
     if primary_family == "coding":
         return "coding_assistant"
+    if primary_family in ("creative", "research", "education"):
+        return "quality_first"
+    if primary_family == "data_analysis":
+        return "research_drafting"
+    if primary_family == "summarization":
+        return "research_drafting"
     if primary_family == "ocr" and any(fmt in input_formats for fmt in ["image", "pdf"]):
         return "invoice_ocr_pipeline"
     if primary_family == "audio":
@@ -1004,6 +1085,8 @@ def infer_workflow_profile(primary_family: str, domain: str, input_formats: List
         return "multilingual_chat"
     if domain == "research":
         return "research_drafting"
+    if "support" in p or domain == "customer_support":
+        return "customer_support_summarization"
     return "generic_balanced"
 
 
@@ -1011,7 +1094,7 @@ def parse_task_request(
     prompt: str,
     input_formats: Optional[List[str]] = None,
     estimated_tokens: int = 2000,
-    estimated_output_tokens: int = 1200,
+    estimated_output_tokens: Optional[int] = None,
     artifact_hints: Optional[List[Dict[str, Any]]] = None,
     llm_parser: Optional[Callable] = None,
     request_constraints: Optional[RequestConstraints] = None,
@@ -1072,8 +1155,16 @@ def parse_task_request(
         if topic in topic_to_domain:
             soft.domain, soft.risk_tier, soft.risk_type, soft.document_type = topic_to_domain[topic]
 
-    complexity = "high" if estimated_tokens > 150000 else "medium" if estimated_tokens > 30000 else "low"
-    workflow_profile = infer_workflow_profile(soft.primary_family, soft.domain, input_formats, prompt)
+    # Composite complexity
+    comp_score = 0
+    if estimated_tokens > 100000: comp_score += 2
+    elif estimated_tokens > 20000: comp_score += 1
+    if "reasoning" in soft.primary_family or "mathematics" in soft.primary_family: comp_score += 1
+    if soft.risk_tier in ["high", "critical"]: comp_score += 1
+    if len(soft.required_stages) > 1: comp_score += 1
+    
+    complexity = "high" if comp_score >= 3 else "medium" if comp_score >= 1 else "low"
+    workflow_profile = infer_workflow_profile(soft.primary_family, soft.domain, input_formats, prompt, complexity, soft.risk_tier)
 
     requires_verifier = (
         hard["requires_verifier"]
@@ -1126,13 +1217,17 @@ def parse_task_request(
 
 
 def signal_value(model: Dict[str, Any], signal: str) -> float:
-    kind, key = signal.split(":", 1)
+    try:
+        kind, key = signal.split(":", 1)
+    except ValueError:
+        return 0.5
     if kind == "perf":
-        return model["performance"].get(key, 0.5)
+        return model.get("performance", {}).get(key, 0.5)
     if kind == "bench":
-        return model["benchmarks"].get(key, 0.5)
+        val = model.get("benchmarks", {}).get(key, 0.5)
+        return val / 100.0 if val > 1.0 else val
     if kind == "domain":
-        return model["domains"].get(key, 0.5)
+        return min(1.0, model.get("domains", {}).get(key, 0.5))
     return 0.5
 
 
@@ -1142,7 +1237,7 @@ def family_fit(model: Dict[str, Any], task: TaskFeatures) -> float:
         return model["domains"].get("general", 0.5)
     base = sum(signal_value(model, sig) * w for sig, w in sigmap.items())
     domkey = DOMAIN_EXPERTISE_MAP.get(task.domain, "general")
-    domfit = model["domains"].get(domkey, 0.5)
+    domfit = min(1.0, model["domains"].get(domkey, 0.5))
     fit = 0.75 * base + 0.25 * domfit
     if task.expected_output == "structured_json":
         fit = 0.70 * fit + 0.30 * model["performance"].get("json_reliability", 0.5)
@@ -1159,7 +1254,7 @@ def family_fit(model: Dict[str, Any], task: TaskFeatures) -> float:
 
 def stage_fit(model: Dict[str, Any], stage_name: str, task: TaskFeatures) -> float:
     stage_map = {
-        "domain_reasoning": lambda: model["domains"].get(DOMAIN_EXPERTISE_MAP.get(task.domain, "general"), 0.5),
+        "domain_reasoning": lambda: min(1.0, model["domains"].get(DOMAIN_EXPERTISE_MAP.get(task.domain, "general"), 0.5)),
         "structured_output": lambda: model["performance"].get("json_reliability", 0.5),
         "audio_understanding": lambda: model["performance"].get("audio_understanding", 0.5),
         "vision_understanding": lambda: model["performance"].get("vision_understanding", 0.5),
@@ -1227,7 +1322,7 @@ def runtime_health_score(model: Dict[str, Any]) -> float:
 
 
 def effective_prior(model: Dict[str, Any], family: str) -> Tuple[float, float]:
-    fam = model["priors"]["task_family"].get(family, model["priors"]["global"])
+    fam = model.get("priors", {}).get("task_family", {}).get(family, model.get("priors", {}).get("global", {"alpha": 1.0, "beta": 1.0}))
     alpha, beta = float(fam["alpha"]), float(fam["beta"])
     ev = model.get("evaluation", {})
     if ev.get("samples", 0) > 0:
@@ -1236,20 +1331,29 @@ def effective_prior(model: Dict[str, Any], family: str) -> Tuple[float, float]:
     return alpha, beta
 
 
-def estimate_request_cost_usd(model: Dict[str, Any], input_tokens: int, output_tokens: int) -> float:
+def estimate_request_cost_usd(model: Dict[str, Any], input_tokens: int, output_tokens: Optional[int], is_cached: bool = False) -> float:
+    if output_tokens is None:
+        output_tokens = 50  # Provide a safe default for cost estimation when not specified
     return ((input_tokens / 1_000_000) * model["pricing"]["input_cost"] +
             (output_tokens / 1_000_000) * model["pricing"]["output_cost"])
 
 
 def estimate_request_latency_ms(model: Dict[str, Any], task: TaskFeatures, n_stages: int = 1) -> float:
-    base = model["ops_dynamic"]["recent_latency_ms"]
+    lp = model.get("latency_profile", {})
+    ttft = lp.get("ttft_ms_mean", model.get("ops_dynamic", {}).get("recent_latency_ms", 500) * 0.3)
+    tpot = lp.get("tpot_ms_mean", 15)
+    out_tokens = getattr(task, 'estimated_output_tokens', None)
+    if out_tokens is None:
+        out_tokens = 1000 if task.complexity == "high" else (250 if task.complexity == "medium" else 50)
+    base = ttft + (out_tokens * tpot)
     complexity_mult = {"low": 1.0, "medium": 1.25, "high": 1.60}.get(task.complexity, 1.0)
     modality_mult = 1.0
     if "audio" in task.input_formats or "video" in task.input_formats:
-        modality_mult += 0.25
-    if "pdf" in task.input_formats and task.requires_ocr:
-        modality_mult += 0.20
-    return float(base * complexity_mult * modality_mult * n_stages)
+        modality_mult = 1.35
+    elif "image" in task.input_formats or "pdf" in task.input_formats:
+        modality_mult = 1.15
+    json_mult = 1.10 if task.requires_json else 1.0
+    return float(base * complexity_mult * modality_mult * json_mult * n_stages)
 
 
 def feasibility_filter(
@@ -1314,7 +1418,7 @@ def feasibility_filter(
             reasons[name] = "insufficient_context_window"
             continue
         # Budget pre-check
-        est_cost = estimate_request_cost_usd(model, task.estimated_tokens, task.estimated_output_tokens)
+        est_cost = estimate_request_cost_usd(model, task.estimated_tokens, task.estimated_output_tokens, getattr(task, 'requires_context_caching', False))
         if rc.max_cost_usd is not None and est_cost > rc.max_cost_usd:
             reasons[name] = f"estimated_cost_exceeds_budget:{est_cost:.4f}"
             continue
@@ -1352,6 +1456,11 @@ def evaluate_policy(task: TaskFeatures) -> PolicyDecision:
         notes.append("Investment finance task restricted to frontier models.")
         restricted_to_tiers.append("Frontier")
         require_verifier_types.extend(["factuality_review", "safety_review"])
+    # Sensitive content escalation
+    if task.domain == "sensitive":
+        notes.append("Sensitive content detected — restricting to frontier models with safety review.")
+        restricted_to_tiers.append("Frontier")
+        require_verifier_types.extend(["safety_review", "factuality_review"])
     # Offensive security denial
     if task.domain == "security" and any(k in task.raw_prompt.lower() for k in ["exploit", "offensive", "payload"]):
         return PolicyDecision(
@@ -1442,14 +1551,14 @@ def attach_contextual_quality(
     enriched = []
     for model in models:
         model = deepcopy(model)
-        g = model["priors"]["global"]
+        g = model.get("priors", {}).get("global", {"alpha": 1.0, "beta": 1.0})
         global_mean = beta_mean(g["alpha"], g["beta"])
         falpha, fbeta = effective_prior(model, task.primary_family)
         fam_mean = beta_mean(falpha, fbeta)
         fam_var = beta_variance(falpha, fbeta)
         fam_fit = family_fit(model, task)
         wf_fit = composite_workflow_fit(model, task)
-        dom_fit = model["domains"].get(DOMAIN_EXPERTISE_MAP.get(task.domain, "general"), 0.5)
+        dom_fit = min(1.0, model["domains"].get(DOMAIN_EXPERTISE_MAP.get(task.domain, "general"), 0.5))
         rt_fit = runtime_health_score(model)
         fr_fit = freshness_score(model)
         contextual_mean = convex_combine(
@@ -1479,8 +1588,8 @@ def attach_contextual_quality(
 def pareto_vector(model: Dict[str, Any]) -> Tuple[float, float, float, float, float]:
     return (
         model["q"]["runtime_adjusted_mean"],
-        -static_cost_score(model),
-        + static_latency_score(model),
+        static_cost_score(model),
+        static_latency_score(model),
         reliability_score(model),
         runtime_health_score(model),
     )
@@ -1507,21 +1616,23 @@ def pareto_frontier(models: List[Dict[str, Any]], eps: float = 0.02) -> List[Dic
 
 
 WEIGHT_PROFILES = {
-    "quality_first": {"quality": 0.36, "uncertainty": 0.16, "cost": 0.10, "latency": 0.08, "reliability": 0.14, "riskfit": 0.10, "runtime": 0.06},
-    "budget_first": {"quality": 0.22, "uncertainty": 0.10, "cost": 0.30, "latency": 0.12, "reliability": 0.10, "riskfit": 0.08, "runtime": 0.08},
-    "latency_first": {"quality": 0.20, "uncertainty": 0.10, "cost": 0.10, "latency": 0.30, "reliability": 0.10, "riskfit": 0.08, "runtime": 0.12},
-    "balanced": {"quality": 0.28, "uncertainty": 0.12, "cost": 0.16, "latency": 0.12, "reliability": 0.12, "riskfit": 0.10, "runtime": 0.10},
-    "high_risk": {"quality": 0.28, "uncertainty": 0.18, "cost": 0.04, "latency": 0.04, "reliability": 0.18, "riskfit": 0.18, "runtime": 0.10},
-    "customer_support_summarization": {"quality": 0.22, "uncertainty": 0.10, "cost": 0.22, "latency": 0.18, "reliability": 0.10, "riskfit": 0.08, "runtime": 0.10},
-    "contract_review_intake": {"quality": 0.30, "uncertainty": 0.15, "cost": 0.06, "latency": 0.06, "reliability": 0.15, "riskfit": 0.18, "runtime": 0.10},
-    "coding_assistant": {"quality": 0.32, "uncertainty": 0.14, "cost": 0.10, "latency": 0.10, "reliability": 0.12, "riskfit": 0.08, "runtime": 0.14},
-    "research_drafting": {"quality": 0.34, "uncertainty": 0.14, "cost": 0.08, "latency": 0.06, "reliability": 0.12, "riskfit": 0.10, "runtime": 0.16},
-    "invoice_ocr_pipeline": {"quality": 0.28, "uncertainty": 0.14, "cost": 0.12, "latency": 0.08, "reliability": 0.12, "riskfit": 0.10, "runtime": 0.16},
-    "multilingual_chat": {"quality": 0.24, "uncertainty": 0.10, "cost": 0.14, "latency": 0.18, "reliability": 0.10, "riskfit": 0.08, "runtime": 0.16},
-    "real_time_voice_agent": {"quality": 0.20, "uncertainty": 0.10, "cost": 0.10, "latency": 0.24, "reliability": 0.12, "riskfit": 0.08, "runtime": 0.16},
-    "audio_summary": {"quality": 0.26, "uncertainty": 0.12, "cost": 0.14, "latency": 0.14, "reliability": 0.12, "riskfit": 0.08, "runtime": 0.14},
-    "generic_balanced": {"quality": 0.28, "uncertainty": 0.12, "cost": 0.16, "latency": 0.12, "reliability": 0.12, "riskfit": 0.10, "runtime": 0.10},
+    "quality_first": {"quality": 0.44, "uncertainty": 0.16, "cost": 0.03, "latency": 0.05, "reliability": 0.16, "riskfit": 0.1, "runtime": 0.06},
+    "complex_reasoning": {"quality": 0.42, "uncertainty": 0.16, "cost": 0.02, "latency": 0.04, "reliability": 0.16, "riskfit": 0.14, "runtime": 0.06},
+    "high_risk": {"quality": 0.36, "uncertainty": 0.18, "cost": 0.01, "latency": 0.03, "reliability": 0.2, "riskfit": 0.18, "runtime": 0.04},
+    "contract_review_intake": {"quality": 0.38, "uncertainty": 0.16, "cost": 0.02, "latency": 0.03, "reliability": 0.18, "riskfit": 0.18, "runtime": 0.05},
+    "research_drafting": {"quality": 0.38, "uncertainty": 0.14, "cost": 0.05, "latency": 0.05, "reliability": 0.16, "riskfit": 0.12, "runtime": 0.1},
+    "coding_assistant": {"quality": 0.36, "uncertainty": 0.14, "cost": 0.08, "latency": 0.08, "reliability": 0.16, "riskfit": 0.08, "runtime": 0.1},
+    "balanced": {"quality": 0.32, "uncertainty": 0.12, "cost": 0.12, "latency": 0.12, "reliability": 0.14, "riskfit": 0.1, "runtime": 0.08},
+    "generic_balanced": {"quality": 0.32, "uncertainty": 0.12, "cost": 0.12, "latency": 0.12, "reliability": 0.14, "riskfit": 0.1, "runtime": 0.08},
+    "invoice_ocr_pipeline": {"quality": 0.32, "uncertainty": 0.14, "cost": 0.08, "latency": 0.08, "reliability": 0.14, "riskfit": 0.12, "runtime": 0.12},
+    "audio_summary": {"quality": 0.28, "uncertainty": 0.12, "cost": 0.1, "latency": 0.18, "reliability": 0.14, "riskfit": 0.08, "runtime": 0.1},
+    "multilingual_chat": {"quality": 0.26, "uncertainty": 0.1, "cost": 0.12, "latency": 0.2, "reliability": 0.14, "riskfit": 0.08, "runtime": 0.1},
+    "real_time_voice_agent": {"quality": 0.18, "uncertainty": 0.08, "cost": 0.08, "latency": 0.32, "reliability": 0.14, "riskfit": 0.06, "runtime": 0.14},
+    "customer_support_summarization": {"quality": 0.24, "uncertainty": 0.1, "cost": 0.24, "latency": 0.16, "reliability": 0.12, "riskfit": 0.06, "runtime": 0.08},
+    "budget_first": {"quality": 0.22, "uncertainty": 0.1, "cost": 0.32, "latency": 0.12, "reliability": 0.1, "riskfit": 0.06, "runtime": 0.08},
+    "latency_first": {"quality": 0.18, "uncertainty": 0.08, "cost": 0.08, "latency": 0.36, "reliability": 0.12, "riskfit": 0.06, "runtime": 0.12},
 }
+
 
 def minmax_normalize(values: List[float], invert: bool = False) -> List[float]:
     if not values:
@@ -1563,16 +1674,44 @@ def compute_utilities(
     rfn = minmax_normalize(rfvals)
     rtn = minmax_normalize(rtvals)
     out = []
+    # Complexity modifier: dynamically shift weights at runtime
+    effective_w = dict(w)
+    if task.complexity == "high":
+        quality_bonus = 0.10
+        cost_cut = min(effective_w.get("cost", 0), quality_bonus * 0.70)
+        lat_cut  = min(effective_w.get("latency", 0), quality_bonus * 0.30)
+        effective_w["quality"]  = min(0.55, effective_w.get("quality", 0) + quality_bonus)
+        effective_w["cost"]     = max(0.01, effective_w.get("cost", 0)    - cost_cut)
+        effective_w["latency"]  = max(0.02, effective_w.get("latency", 0) - lat_cut)
+    elif task.complexity == "medium":
+        quality_bonus = 0.05
+        cost_cut = min(effective_w.get("cost", 0), quality_bonus)
+        effective_w["quality"] = min(0.50, effective_w.get("quality", 0) + quality_bonus)
+        effective_w["cost"]    = max(0.02, effective_w.get("cost", 0)    - cost_cut)
+    elif task.complexity == "low":
+        quality_cut = 0.15
+        effective_w["quality"] = max(0.05, effective_w.get("quality", 0) - quality_cut)
+        effective_w["cost"]    = min(0.50, effective_w.get("cost", 0) + (quality_cut * 0.6))
+        effective_w["latency"] = min(0.50, effective_w.get("latency", 0) + (quality_cut * 0.4))
+    w = effective_w
+
     for model, q, u, c, l, r, rf, rt in zip(models, qn, un, cn, ln, rn, rfn, rtn):
         m = deepcopy(model)
+        # Capability gate: penalise weak models on complex/high-risk tasks
+        capability_gate = 0.0
+        if task.complexity == "high" or task.risk_tier == "high":
+            human_eval = model.get("performance", {}).get("human_eval_score", 50)
+            mMLU       = model.get("performance", {}).get("mMLU_score", 50)
+            capability_gate = max(0.0, (70 - min(human_eval, mMLU)) / 100)
         utility = (
             w.get("quality", 0.0) * q
             - w.get("uncertainty", 0.0) * u
-            - w.get("cost", 0.0) * c
+            + w.get("cost", 0.0) * c
             + w.get("latency", 0.0) * l
             + w.get("reliability", 0.0) * r
-            + w["riskfit"] * rf
+            + w.get("riskfit", 0.0) * rf
             + w.get("runtime", 0.0) * rt
+            - capability_gate
         )
         # Penalty for ambiguous or highly decomposed tasks
         if task.ambiguity_score > 0.5:
@@ -1582,7 +1721,7 @@ def compute_utilities(
         # SLA hard penalties
         rc = task.request_constraints
         est_latency = estimate_request_latency_ms(model, task)
-        est_cost = estimate_request_cost_usd(model, task.estimated_tokens, task.estimated_output_tokens)
+        est_cost = estimate_request_cost_usd(model, task.estimated_tokens, task.estimated_output_tokens, getattr(task, 'requires_context_caching', False))
         sla_violation = False
         if rc.max_latency_ms is not None and est_latency > rc.max_latency_ms:
             utility -= 0.15
@@ -1628,7 +1767,8 @@ def estimate_confidence(
             # Sampled utility aligned with the real utility's dominant terms
             su = (
                 w.get("quality", 0.0) * sq
-                - w.get("cost", 0.0) * static_cost_score(m)
+                + w.get("cost", 0.0) * static_cost_score(m)
+                + w.get("latency", 0.0) * min(1.0, max(0.0, bounded_beta_sample(static_latency_score(m), 0.05)))
                 + w.get("reliability", 0.0) * reliability_score(m)
                 + w.get("runtime", 0.0) * runtime_health_score(m)
             )
@@ -1665,7 +1805,7 @@ def choose_verifier_models(
     scored = []
     for model in candidates:
         vf = model.get("verifier_fit", {})
-        avg_fit = float(statistics.mean([vf.get(vt, 0.5) for vt in verifier_types]))
+        avg_fit = float(statistics.mean([min(1.0, vf.get(vt, 0.5)) for vt in verifier_types]))
         scored.append((model, avg_fit))
     scored.sort(key=lambda x: x[1], reverse=True)
     return [s[0] for s in scored[:max_verifiers]]
@@ -1775,7 +1915,7 @@ def generate_single_model_plan(
     profile_name: str
 ) -> ExecutionPlan:
     est_latency = estimate_request_latency_ms(model, task)
-    est_cost = estimate_request_cost_usd(model, task.estimated_tokens, task.estimated_output_tokens)
+    est_cost = estimate_request_cost_usd(model, task.estimated_tokens, task.estimated_output_tokens, getattr(task, 'requires_context_caching', False))
     stage_routes = []
     n_stages = max(len(task.required_stages), 1)
     for i, stage_name in enumerate(task.required_stages):
@@ -1861,7 +2001,7 @@ def route(
     prompt: str,
     input_formats: Optional[List[str]] = None,
     estimated_tokens: int = 2000,
-    estimated_output_tokens: int = 1200,
+    estimated_output_tokens: Optional[int] = None,
     artifact_hints: Optional[List[Dict[str, Any]]] = None,
     llm_parser: Optional[Callable] = None,
     request_constraints: Optional[RequestConstraints] = None,
@@ -2211,156 +2351,181 @@ def format_decision_summary(decision: RoutingDecision) -> str:
 # ============================================================================
 # END-TO-END DEMONSTRATION
 # ============================================================================
-print("=" * 80)
-print("ATLAS ROUTER — COMPLETE END-TO-END DEMONSTRATION")
-print("=" * 80)
-print()
+def run_demo():
+    print("=" * 80)
+    print("ATLAS ROUTER — COMPLETE END-TO-END DEMONSTRATION")
+    print("=" * 80)
+    print()
 
-# ---- Scenario 1: Coding Task ----
-print("-" * 80)
-print("SCENARIO 1: Complex coding task")
-print("-" * 80)
-decision_1 = route(
-    prompt="Implement a concurrent web crawler in Python with rate limiting, retry logic, and structured JSON output of all crawled pages.",
-    input_formats=["text"],
-    estimated_tokens=3000,
-    estimated_output_tokens=4000,
-)
-print(format_decision_summary(decision_1))
-print()
+        # ---- Scenario 1: Coding Task ----
+    print("-" * 80)
+    print("SCENARIO 1: Complex coding task")
+    print("-" * 80)
+    decision_1 = route(
+        prompt="Implement a concurrent web crawler in Python with rate limiting, retry logic, and structured JSON output of all crawled pages.",
+        input_formats=["text"],
+        estimated_tokens=3000,
+        estimated_output_tokens=4000,
+    )
+    print(format_decision_summary(decision_1))
+    print()
+    
+    # ---- Scenario 2: Legal Contract Review ----
+    print("-" * 80)
+    print("SCENARIO 2: Legal contract review (high-risk, verification required)")
+    print("-" * 80)
+    decision_2 = route(
+        prompt="Review this 45-page NDA contract, identify all obligations and liability clauses, flag non-standard terms, and verify compliance with GDPR. Return structured JSON.",
+        input_formats=["pdf", "text"],
+        estimated_tokens=85000,
+        estimated_output_tokens=8000,
+        artifact_hints=[{"format": "pdf", "page_count": 45, "text_density": 0.90, "scan_likelihood": 0.05}],
+    )
+    print(format_decision_summary(decision_2))
+    print()
+    
+    # ---- Scenario 3: Audio Summarization ----
+    print("-" * 80)
+    print("SCENARIO 3: Audio meeting summarization")
+    print("-" * 80)
+    decision_3 = route(
+        prompt="Summarize this 45-minute engineering meeting recording. Extract action items and decisions made.",
+        input_formats=["audio", "text"],
+        estimated_tokens=25000,
+        estimated_output_tokens=2000,
+        artifact_hints=[{"format": "audio", "audio_duration_sec": 2700, "audio_quality": 0.80}],
+    )
+    print(format_decision_summary(decision_3))
+    print()
+    
+    # ---- Scenario 4: Policy Denial (Offensive Security) ----
+    print("-" * 80)
+    print("SCENARIO 4: Offensive security request (policy denial)")
+    print("-" * 80)
+    decision_4 = route(
+        prompt="Write an exploit payload for CVE-2024-1234 that achieves remote code execution on unpatched systems.",
+        input_formats=["text"],
+        estimated_tokens=1500,
+        estimated_output_tokens=3000,
+    )
+    print(format_decision_summary(decision_4))
+    print()
+    
+    # ---- Scenario 5: Budget-Constrained Customer Support ----
+    print("-" * 80)
+    print("SCENARIO 5: Budget-constrained customer support summarization")
+    print("-" * 80)
+    decision_5 = route(
+        prompt="Summarize these customer support tickets and identify the top 5 recurring issues. Suggest response templates.",
+        input_formats=["text"],
+        estimated_tokens=8000,
+        estimated_output_tokens=3000,
+        request_constraints=RequestConstraints(max_latency_ms=3000, max_cost_usd=0.05),
+        tenant_context=TenantContext(
+            tenant_id="acme-corp", tenant_name="Acme Corporation", budget_remaining_usd=2.50,
+        ),
+    )
+    print(format_decision_summary(decision_5))
+    print()
+    
+    # ---- Scenario 6: Long-context research with citations ----
+    print("-" * 80)
+    print("SCENARIO 6: Long-context research synthesis with citations required")
+    print("-" * 80)
+    decision_6 = route(
+        prompt="Analyze these research papers on transformer architectures, synthesize the key findings, compare methodologies, and provide citations for each claim.",
+        input_formats=["pdf", "text"],
+        estimated_tokens=350000,
+        estimated_output_tokens=12000,
+        artifact_hints=[{"format": "pdf", "page_count": 120, "text_density": 0.92}],
+    )
+    print(format_decision_summary(decision_6))
+    print()
+    
+    # ---- Scenario 7: File-driven routing with conflict detection ----
+    print("-" * 80)
+    print("SCENARIO 7: File-driven input (auto-detect + conflict + topic inference)")
+    print("-" * 80)
+    
+    # Create a small temp PDF-like text file to exercise the file path.
+    import tempfile
+    tmp = tempfile.NamedTemporaryFile(suffix=".txt", delete=False, mode="w")
+    tmp.write("THIS AGREEMENT is made between the parties. "
+              "The obligations and liability of each party of the first part...")
+    tmp.close()
+    
+    decision_7 = route(
+        prompt="Explain this image in detail",   # deliberate conflict: says image, file is text/contract
+        files=[tmp.name],
+        estimated_tokens=5000,
+        estimated_output_tokens=2000,
+    )
+    print(format_decision_summary(decision_7))
+    os.unlink(tmp.name)
+    
+    
+    # ---- Summary table ----
+    print("-" * 80)
+    print("ROUTING SUMMARY TABLE")
+    print("-" * 80)
+    summary_data = []
+    for i, (desc, dec) in enumerate([
+        ("Coding task", decision_1),
+        ("Legal contract review", decision_2),
+        ("Audio summarization", decision_3),
+        ("Offensive security", decision_4),
+        ("Budget customer support", decision_5),
+        ("Long-context research", decision_6),
+        ("File-driven input", decision_7),
+    ], 1):
+        plan = dec.selected_plan
+        if plan and plan.plan_type == "multi_stage":
+            model_label = " + ".join(sorted({sr.selected_model for sr in plan.stage_routes}))
+        elif plan:
+            model_label = plan.selected_model
+        else:
+            model_label = "NONE"
+        summary_data.append({
+            "Scenario": f"{i}. {desc}",
+            "Selected Model": model_label,
+            "Confidence": f"{plan.confidence:.3f}" if plan else "N/A",
+            "Est. Cost": f"${plan.expected_cost_usd:.5f}" if plan else "N/A",
+            "Est. Latency": f"{plan.expected_latency_ms:.0f}ms" if plan else "N/A",
+            "Abstain": dec.abstain,
+            "Escalate": dec.escalate_to_human,
+            "Verifiers": len(plan.verifier_models) if plan else 0,
+        })
+    # Simple custom string formatting table instead of pandas
+    headers = ['Scenario', 'Selected Model', 'Conf', 'Est. Cost', 'Est. Latency', 'Abstain', 'Escalate', 'Verifiers']
+    col_widths = [28, 40, 6, 11, 14, 7, 8, 9]
+    
+    header_str = ' | '.join(h.ljust(w) for h, w in zip(headers, col_widths))
+    print(header_str)
+    print('-' * len(header_str))
+    
+    for row in summary_data:
+        row_vals = [
+            str(row['Scenario']), str(row['Selected Model']), str(row['Confidence']),
+            str(row['Est. Cost']), str(row['Est. Latency']), str(row['Abstain']),
+            str(row['Escalate']), str(row['Verifiers'])
+        ]
+        row_str = ' | '.join(v.ljust(w) for v, w in zip(row_vals, col_widths))
+        print(row_str)
+    print()
+    print("=" * 80)
+    print("END OF DEMONSTRATION")
+    print("=" * 80)
+    
+    
+    
+    
 
-# ---- Scenario 2: Legal Contract Review ----
-print("-" * 80)
-print("SCENARIO 2: Legal contract review (high-risk, verification required)")
-print("-" * 80)
-decision_2 = route(
-    prompt="Review this 45-page NDA contract, identify all obligations and liability clauses, flag non-standard terms, and verify compliance with GDPR. Return structured JSON.",
-    input_formats=["pdf", "text"],
-    estimated_tokens=85000,
-    estimated_output_tokens=8000,
-    artifact_hints=[{"format": "pdf", "page_count": 45, "text_density": 0.90, "scan_likelihood": 0.05}],
-)
-print(format_decision_summary(decision_2))
-print()
-
-# ---- Scenario 3: Audio Summarization ----
-print("-" * 80)
-print("SCENARIO 3: Audio meeting summarization")
-print("-" * 80)
-decision_3 = route(
-    prompt="Summarize this 45-minute engineering meeting recording. Extract action items and decisions made.",
-    input_formats=["audio", "text"],
-    estimated_tokens=25000,
-    estimated_output_tokens=2000,
-    artifact_hints=[{"format": "audio", "audio_duration_sec": 2700, "audio_quality": 0.80}],
-)
-print(format_decision_summary(decision_3))
-print()
-
-# ---- Scenario 4: Policy Denial (Offensive Security) ----
-print("-" * 80)
-print("SCENARIO 4: Offensive security request (policy denial)")
-print("-" * 80)
-decision_4 = route(
-    prompt="Write an exploit payload for CVE-2024-1234 that achieves remote code execution on unpatched systems.",
-    input_formats=["text"],
-    estimated_tokens=1500,
-    estimated_output_tokens=3000,
-)
-print(format_decision_summary(decision_4))
-print()
-
-# ---- Scenario 5: Budget-Constrained Customer Support ----
-print("-" * 80)
-print("SCENARIO 5: Budget-constrained customer support summarization")
-print("-" * 80)
-decision_5 = route(
-    prompt="Summarize these customer support tickets and identify the top 5 recurring issues. Suggest response templates.",
-    input_formats=["text"],
-    estimated_tokens=8000,
-    estimated_output_tokens=3000,
-    request_constraints=RequestConstraints(max_latency_ms=3000, max_cost_usd=0.05),
-    tenant_context=TenantContext(
-        tenant_id="acme-corp", tenant_name="Acme Corporation", budget_remaining_usd=2.50,
-    ),
-)
-print(format_decision_summary(decision_5))
-print()
-
-# ---- Scenario 6: Long-context research with citations ----
-print("-" * 80)
-print("SCENARIO 6: Long-context research synthesis with citations required")
-print("-" * 80)
-decision_6 = route(
-    prompt="Analyze these research papers on transformer architectures, synthesize the key findings, compare methodologies, and provide citations for each claim.",
-    input_formats=["pdf", "text"],
-    estimated_tokens=350000,
-    estimated_output_tokens=12000,
-    artifact_hints=[{"format": "pdf", "page_count": 120, "text_density": 0.92}],
-)
-print(format_decision_summary(decision_6))
-print()
-
-# ---- Scenario 7: File-driven routing with conflict detection ----
-print("-" * 80)
-print("SCENARIO 7: File-driven input (auto-detect + conflict + topic inference)")
-print("-" * 80)
-
-# Create a small temp PDF-like text file to exercise the file path.
-import tempfile
-tmp = tempfile.NamedTemporaryFile(suffix=".txt", delete=False, mode="w")
-tmp.write("THIS AGREEMENT is made between the parties. "
-          "The obligations and liability of each party of the first part...")
-tmp.close()
-
-decision_7 = route(
-    prompt="Explain this image in detail",   # deliberate conflict: says image, file is text/contract
-    files=[tmp.name],
-    estimated_tokens=5000,
-    estimated_output_tokens=2000,
-)
-print(format_decision_summary(decision_7))
-os.unlink(tmp.name)
-
-
-# ---- Summary table ----
-print("-" * 80)
-print("ROUTING SUMMARY TABLE")
-print("-" * 80)
-summary_data = []
-for i, (desc, dec) in enumerate([
-    ("Coding task", decision_1),
-    ("Legal contract review", decision_2),
-    ("Audio summarization", decision_3),
-    ("Offensive security", decision_4),
-    ("Budget customer support", decision_5),
-    ("Long-context research", decision_6),
-    ("File-driven input", decision_7),
-], 1):
-    plan = dec.selected_plan
-    if plan and plan.plan_type == "multi_stage":
-        model_label = " + ".join(sorted({sr.selected_model for sr in plan.stage_routes}))
-    elif plan:
-        model_label = plan.selected_model
-    else:
-        model_label = "NONE"
-    summary_data.append({
-        "Scenario": f"{i}. {desc}",
-        "Selected Model": model_label,
-        "Confidence": f"{plan.confidence:.3f}" if plan else "N/A",
-        "Est. Cost": f"${plan.expected_cost_usd:.5f}" if plan else "N/A",
-        "Est. Latency": f"{plan.expected_latency_ms:.0f}ms" if plan else "N/A",
-        "Abstain": dec.abstain,
-        "Escalate": dec.escalate_to_human,
-        "Verifiers": len(plan.verifier_models) if plan else 0,
-    })
-summary_df = pd.DataFrame(summary_data)
-print(summary_df.to_string(index=False))
-print()
-print("=" * 80)
-print("END OF DEMONSTRATION")
-print("=" * 80)
-
-
-
-
+def process_external_feedback(model_name: str, task_family: str, win: bool):
+    """External interface for routing feedback to update Bayesian priors."""
+    eval_dict = {"wins": 1 if win else 0, "losses": 0 if win else 1, "samples": 1}
+    for m in ATLAS_MODEL_REGISTRY:
+        if m["name"] == model_name:
+            update_model_evaluation(m, task_family, eval_dict)
+            break
+if __name__ == '__main__':
+    run_demo()

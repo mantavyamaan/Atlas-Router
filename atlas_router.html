@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Atlas Router - LLM Routing Dashboard</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
+  <script>pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.21/mammoth.browser.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/4.0.2/tesseract.min.js"></script>
+  
+  <style>
+    :root {
+      --bg: #07111f;
+      --bg-2: #0b1627;
+      --panel: rgba(15, 29, 50, 0.82);
+      --card: rgba(255, 255, 255, 0.075);
+      --border: rgba(255, 255, 255, 0.14);
+      --border-2: rgba(255, 255, 255, 0.22);
+      --text: #eef6ff;
+      --muted: #9fb2c8;
+      --accent: #69e3ff;
+      --accent-2: #a78bfa;
+      --danger: #fb7185;
+      --warning: #fbbf24;
+      --success: #22c55e;
+      --shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
+      --radius-xl: 28px;
+      --radius-md: 14px;
+      --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background-color: var(--bg); color: var(--text);
+      font-family: var(--sans); line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      background-image: radial-gradient(circle at 15% 50%, rgba(105, 227, 255, 0.04), transparent 25%),
+                        radial-gradient(circle at 85% 30%, rgba(167, 139, 250, 0.04), transparent 25%);
+      background-attachment: fixed;
+      height: 100vh;
+      overflow: hidden;
+    }
+    h1, h2, h3, h4 { margin: 0; font-weight: 700; letter-spacing: -0.02em; }
+    button, input, select, textarea { font-family: inherit; color: inherit; }
+    
+    .app { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; padding: 16px 32px; background: rgba(7, 17, 31, 0.7); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); z-index: 100; flex-shrink: 0; }
+    .brand { display: flex; align-items: center; gap: 16px; }
+    .brand-icon { width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); display: flex; align-items: center; justify-content: center; color: #000; font-weight: 900; font-size: 20px; }
+    .topbar-stats { display: flex; gap: 16px; align-items: center; }
+    .pill { background: var(--card); border: 1px solid var(--border); padding: 6px 14px; border-radius: 99px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+    
+    .layout { display: grid; grid-template-columns: minmax(320px, 420px) minmax(0, 1fr); gap: 32px; padding: 32px; max-width: 1600px; margin: 0 auto; width: 100%; align-items: start; flex: 1; overflow: hidden; }
+    .panel { background: var(--panel); backdrop-filter: blur(24px); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 32px; box-shadow: var(--shadow); height: 100%; overflow-y: auto; }
+    
+    .form-group { margin-bottom: 24px; }
+    .form-group label { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    input[type="text"], input[type="number"], select, textarea { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 14px 16px; font-size: 14px; transition: all 0.2s; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); background: rgba(0,0,0,0.5); }
+    textarea { resize: vertical; min-height: 120px; }
+    
+    .btn { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #000; border: none; padding: 16px 24px; border-radius: var(--radius-md); font-weight: 700; font-size: 16px; cursor: pointer; width: 100%; transition: all 0.3s; }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(105, 227, 255, 0.4); filter: brightness(1.1); }
+    
+    .accordion { margin-bottom: 24px; border: 1px solid var(--border); border-radius: var(--radius-md); background: var(--card); overflow: hidden; }
+    .accordion-header { padding: 16px; font-size: 14px; font-weight: 600; cursor: pointer; display: flex; justify-content: space-between; user-select: none; }
+    .accordion-header:hover { background: rgba(255,255,255,0.05); }
+    .accordion-content { display: none; padding: 20px; border-top: 1px solid var(--border); background: rgba(0,0,0,0.2); }
+    .accordion.open .accordion-content { display: block; }
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    
+    .file-drop { border: 2px dashed var(--border-2); border-radius: var(--radius-md); padding: 32px 20px; text-align: center; background: rgba(0,0,0,0.2); cursor: pointer; }
+    .file-drop:hover, .file-drop.dragover { border-color: var(--accent); background: rgba(105, 227, 255, 0.05); }
+    .check-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+    .check-row input[type="checkbox"] { width: 18px; height: 18px; }
+    .file-item { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 10px 16px; border-radius: var(--radius-md); font-size: 13px; margin-bottom: 6px; }
+    
+    .main-content { min-width: 0; height: 100%; overflow-y: auto; padding-right: 16px; padding-bottom: 32px; }
+    .decision-hero { display: grid; grid-template-columns: minmax(0, 2fr) minmax(240px, 1fr); gap: 24px; margin-bottom: 32px; scroll-margin-top: 20px; }
+    .selected-card, .chart-card { background: linear-gradient(145deg, rgba(30,41,59,0.5), rgba(15,23,42,0.8)); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 40px; box-shadow: var(--shadow); min-width: 0; }
+    .status-row { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 18px; }
+    .selected-model { font-size: clamp(28px, 4vw, 48px); line-height: 1.05; overflow-wrap: anywhere; margin-bottom: 12px; }
+    .selected-meta { color: var(--muted); font-size: 16px; margin: 0 0 32px; }
+    .hero-card { background: linear-gradient(145deg, rgba(30,41,59,0.5), rgba(15,23,42,0.8)); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 40px; position: relative; overflow: hidden; }
+    .hero-model { font-size: 48px; font-weight: 800; margin-bottom: 12px; }
+    .hero-meta { color: var(--muted); font-size: 16px; margin-bottom: 32px; }
+    .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+    .kpi { background: rgba(0,0,0,0.3); padding: 20px; border-radius: var(--radius-md); border: 1px solid var(--border); }
+    .kpi strong { display: block; font-size: 24px; margin-bottom: 6px; }
+    
+    .empty-state { text-align: center; padding: 100px 20px; }
+    .empty-state .icon { font-size: 64px; margin-bottom: 24px; opacity: 0.5; }
+    
+    table { width: 100%; border-collapse: separate; border-spacing: 0 8px; margin-top: 16px; }
+    th { text-align: left; padding: 0 16px 8px; font-size: 12px; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+    td { padding: 16px; background: rgba(255,255,255,0.02); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .bar-row { display: grid; align-items: center; gap: 16px; }
+    .bar-track { height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; }
+    .bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-radius: 3px; }
+    .badge { padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; display: inline-block; }
+    .badge.success { background: rgba(34, 197, 94, 0.15); color: var(--success); border: 1px solid rgba(34, 197, 94, 0.3); }
+    .badge.warn { background: rgba(251, 191, 36, 0.15); color: var(--warning); border: 1px solid rgba(251, 191, 36, 0.3); }
+    .badge.danger { background: rgba(251, 113, 133, 0.15); color: var(--danger); border: 1px solid rgba(251, 113, 133, 0.3); }
+    .table-wrap { overflow-x: auto; }
+    .rank { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,0.06); font-weight: 700; }
+    .gauge { width: 180px; aspect-ratio: 1; margin: 8px auto 0; border-radius: 50%; display: grid; place-items: center; background: conic-gradient(var(--accent) var(--p), rgba(255,255,255,0.08) 0); position: relative; }
+    .gauge::before { content: ""; position: absolute; inset: 16px; border-radius: 50%; background: var(--bg-2); border: 1px solid var(--border); }
+    .gauge-content { position: relative; z-index: 1; display: grid; gap: 4px; text-align: center; }
+    .gauge-content strong { font-size: 30px; }
+    .gauge-content span { color: var(--muted); font-size: 12px; }
+    @media (max-width: 980px) {
+      .topbar { position: static; padding: 16px; align-items: flex-start; gap: 16px; flex-direction: column; }
+      .layout { grid-template-columns: 1fr; padding: 16px; gap: 16px; }
+      .panel.sticky { position: static; max-height: none; }
+      .decision-hero, .kpi-grid { grid-template-columns: 1fr; }
+      .selected-card, .chart-card, .panel { padding: 24px; }
+    }
+    
+    .toast { position: fixed; bottom: 24px; right: 24px; background: rgba(15, 29, 50, 0.95); border: 1px solid var(--border); padding: 16px 24px; border-radius: 14px; box-shadow: var(--shadow); z-index: 1000; transition: all 0.3s; }
+    .toast.hidden { opacity: 0; pointer-events: none; transform: translateY(20px); }
+  
+    .modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 2000; opacity: 0; pointer-events: none; transition: opacity 0.2s; }
+    .modal-overlay.active { opacity: 1; pointer-events: all; }
+    .modal { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius-xl); width: 600px; max-width: 90vw; max-height: 85vh; display: flex; flex-direction: column; box-shadow: var(--shadow); overflow: hidden; transform: translateY(20px); transition: transform 0.2s; }
+    .modal-overlay.active .modal { transform: translateY(0); }
+    .modal-header { padding: 24px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .modal-header h2 { font-size: 20px; margin: 0; }
+    .modal-close { cursor: pointer; font-size: 24px; color: var(--muted); background: none; border: none; }
+    .modal-close:hover { color: var(--text); }
+    .modal-controls { padding: 16px 24px; border-bottom: 1px solid var(--border); display: flex; gap: 16px; align-items: center; background: rgba(0,0,0,0.2); }
+    .modal-body { flex: 1; overflow-y: auto; padding: 16px 24px; display: grid; gap: 8px; }
+    .model-option { display: flex; align-items: center; justify-content: space-between; background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 12px 16px; border-radius: var(--radius-md); cursor: pointer; transition: background 0.1s; }
+    .model-option:hover { background: rgba(255,255,255,0.06); }
+    .model-option input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; pointer-events: none; }
+    .btn-small { background: rgba(255,255,255,0.1); border: 1px solid var(--border); color: var(--text); padding: 6px 12px; border-radius: 6px; cursor: pointer; font-size: 12px; }
+    .btn-small:hover { background: rgba(255,255,255,0.15); }
+    .btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); padding: 12px; border-radius: var(--radius-md); cursor: pointer; font-weight: 600; width: 100%; text-align: center; margin-bottom: 16px; transition: all 0.2s; }
+    .btn-outline:hover { background: rgba(105, 227, 255, 0.1); }
+</style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-icon">A</div>
+        <div>
+          <h1>Atlas Router</h1>
+          <p style="margin:0; font-size:13px; color:var(--muted)">Model selection & confidence orchestration</p>
+        </div>
+      </div>
+      <div class="topbar-stats">
+        <div class="pill"><div style="width:8px; height:8px; border-radius:50%; background:var(--success); box-shadow:0 0 8px var(--success);"></div> Runtime active</div>
+        <div class="pill" id="registryPill">Registry: 101 models</div>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="panel sticky">
+        <div style="margin-bottom:24px;">
+          <h2 style="font-size:22px;">Routing Request</h2>
+        </div>
+        
+        <form id="routerForm">
+          <div class="form-group">
+            <label for="prompt">Task Prompt</label>
+            <textarea id="prompt" placeholder="E.g. Extract the pricing tier liabilities..."></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label>Upload Artifacts</label>
+            <div class="file-drop" id="fileDrop">
+              <input type="file" id="fileInput" multiple style="display:none;" />
+              <p>Drop files here or click to inspect</p>
+            </div>
+            <div id="fileList" style="margin-top:12px; display:grid; gap:8px;"></div>
+          </div>
+          
+          <button type="submit" class="btn">Run Router ➔</button>
+          <div style="height: 16px;"></div>
+          <button type="button" class="btn-outline" id="manageModelsBtn">⚙️ Manage Enabled Models (101/101)</button>
+          <div style="height: 8px;"></div>
+          
+          <div class="accordion">
+            <div class="accordion-header" onclick="this.parentElement.classList.toggle('open')">
+              <span>Advanced Constraints</span>
+              <span>▼</span>
+            </div>
+            <div class="accordion-content">
+              <div class="form-group">
+                <label for="profileName">Routing Profile</label>
+                <select id="profileName">
+                  <option value="auto">Auto-Detect Workflow</option>
+                  <option value="generic_balanced">Balanced (Default)</option>
+                  <option value="quality_first">Quality First</option>
+                  <option value="budget_first">Budget First</option>
+                  <option value="latency_first">Latency First</option>
+                </select>
+              </div>
+              <div class="grid-2">
+                <div class="form-group"><label>Est. Input</label><input id="estimatedTokens" type="number" placeholder="Auto" /></div>
+                <div class="form-group"><label>Est. Output</label><input id="estimatedOutputTokens" type="number" placeholder="Auto" /></div>
+              </div>
+              <div class="grid-2">
+                <div class="form-group"><label>Max Latency</label><input id="maxLatency" type="number" /></div>
+                <div class="form-group"><label>Max Cost</label><input id="maxCost" type="number" step="0.01" /></div>
+              </div>
+              <div class="form-group"><label>Min Confidence</label><input id="minConfidence" type="number" step="0.01" value="0.20" /></div>
+              <div class="form-group"><label>Allowed Providers</label><input id="allowedProviders" type="text" /></div>
+              <div class="form-group"><label>Disallowed Providers</label><input id="disallowedProviders" type="text" /></div>
+              <div class="check-row"><input type="checkbox" id="noOpenWeight" /><label>Reject open weight</label></div>
+              <div class="check-row"><input type="checkbox" id="noWebAccess" /><label>Reject web access</label></div>
+              <div class="check-row"><input type="checkbox" id="singleModel" /><label>Force single model</label></div>
+              <div class="check-row"><input type="checkbox" id="mandatoryVerifier" /><label>Force mandatory verifier</label></div>
+            </div>
+          </div>
+        </form>
+      </aside>
+
+      <section class="main-content">
+        <div id="results">
+          <div class="panel empty-state">
+            <div class="icon">🚀</div>
+            <h2>Ready to route</h2>
+            <p style="color: var(--muted); margin-top: 12px;">Enter a task prompt and click "Run Router" to begin.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+
+  <div id="modelModal" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h2>Manage Enabled Models</h2>
+        <button class="modal-close" id="closeModalBtn">&times;</button>
+      </div>
+      <div class="modal-controls">
+        <input type="text" id="modalSearch" placeholder="Search models or providers..." style="flex:1;" />
+        <button class="btn-small" id="selectAllBtn">Select All</button>
+        <button class="btn-small" id="deselectAllBtn">Deselect All</button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- populated by js -->
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden">
+    <strong id="toastTitle" style="display:block; margin-bottom: 4px;"></strong>
+    <p id="toastBody" style="margin: 0; font-size: 14px; color: #9fb2c8;"></p>
+  </div>
+
+  <!-- DUMMY ELEMENTS TO PREVENT ROUTER CRASH -->
+  <div style="display:none;">
+    <button id="resetBtn"></button>
+    <button id="copyJsonBtn"></button>
+    <button id="downloadHtmlBtn"></button>
+    <span id="metricModels"></span>
+    <div id="formatChecks"></div>
+  </div>
+
+  <!-- ERROR CATCHER FOR DEBUGGING -->
+  <script>
+    window.addEventListener('error', function(e) { alert('JS Error: ' + e.message); });
+    window.addEventListener('unhandledrejection', function(e) { alert('Promise Rejection: ' + e.reason); });
+  </script>
+<script src="model_registry.js"></script>
+<script src="router_logic.js"></script>
+
+</body>
+</html>
