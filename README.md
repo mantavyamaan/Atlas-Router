@@ -2,6 +2,8 @@
 
 A production-oriented LLM routing control plane that intelligently selects and orchestrates the optimal AI model workflow using structured task understanding, policy enforcement, runtime telemetry, Bayesian quality estimation, and multi-objective optimization.
 
+You can access my model here: [Atlas Model](https://mantavyamaan.github.io/Atlas-Router/atlas_router.html)
+
 ---
 
 ## 🚀 The Architecture (V1 vs V2)
