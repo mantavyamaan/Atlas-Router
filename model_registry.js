@@ -43,7 +43,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 5000,
       "total_latency_variance": 1000000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 1000.0
+      "ttft_ms_mean": 1000.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -79,7 +81,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 4.0,
       "output_cost": 12.0,
-      "relative_cost_score": 0.8
+      "relative_cost_score": 0.8,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "OpenAI",
     "quality_distribution": {
@@ -138,7 +149,7 @@ const ATLAS_MODEL_REGISTRY = [
     "domains": {
       "finance": 0.9552930470620191,
       "general": 0.9890258219801562,
-      "legal": 1.019693065268899,
+      "legal": 1.0,
       "medical": 0.9923345519859653
     },
     "evaluation": {
@@ -152,7 +163,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 20000,
       "total_latency_variance": 25000000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 4000.0
+      "ttft_ms_mean": 4000.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -188,7 +201,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 10.0,
       "output_cost": 30.0,
-      "relative_cost_score": 0.5
+      "relative_cost_score": 0.5,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "OpenAI",
     "quality_distribution": {
@@ -213,7 +235,7 @@ const ATLAS_MODEL_REGISTRY = [
       "consistency_review": 0.98,
       "factuality_review": 0.98,
       "safety_review": 0.98,
-      "schema_validation": 1.03
+      "schema_validation": 1.0
     },
     "version": "2026.1"
   },
@@ -261,7 +283,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 5000,
       "total_latency_variance": 1000000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 1000.0
+      "ttft_ms_mean": 1000.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -297,7 +321,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 4.0,
       "output_cost": 12.0,
-      "relative_cost_score": 0.8
+      "relative_cost_score": 0.8,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "OpenAI",
     "quality_distribution": {
@@ -370,7 +403,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -406,7 +441,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "OpenAI",
     "quality_distribution": {
@@ -479,7 +523,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -515,7 +561,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "OpenAI",
     "quality_distribution": {
@@ -588,7 +643,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -624,7 +681,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "OpenAI",
     "quality_distribution": {
@@ -697,7 +763,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -733,7 +801,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "OpenAI",
     "quality_distribution": {
@@ -806,7 +883,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -842,7 +921,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "OpenAI",
     "quality_distribution": {
@@ -915,7 +1003,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -951,7 +1041,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "OpenAI",
     "quality_distribution": {
@@ -1009,7 +1108,7 @@ const ATLAS_MODEL_REGISTRY = [
     ],
     "domains": {
       "finance": 0.9327492160682312,
-      "general": 1.0122556971124408,
+      "general": 1.0,
       "legal": 0.9886350285868638,
       "medical": 0.9932188611863628
     },
@@ -1024,7 +1123,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 20000,
       "total_latency_variance": 25000000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 4000.0
+      "ttft_ms_mean": 4000.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -1060,7 +1161,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 10.0,
       "output_cost": 30.0,
-      "relative_cost_score": 0.5
+      "relative_cost_score": 0.5,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "OpenAI",
     "quality_distribution": {
@@ -1085,7 +1195,7 @@ const ATLAS_MODEL_REGISTRY = [
       "consistency_review": 0.98,
       "factuality_review": 0.98,
       "safety_review": 0.98,
-      "schema_validation": 1.03
+      "schema_validation": 1.0
     },
     "version": "2026.1"
   },
@@ -1134,7 +1244,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 20000,
       "total_latency_variance": 25000000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 4000.0
+      "ttft_ms_mean": 4000.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -1170,7 +1282,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 10.0,
       "output_cost": 30.0,
-      "relative_cost_score": 0.5
+      "relative_cost_score": 0.5,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Anthropic",
     "quality_distribution": {
@@ -1195,7 +1316,7 @@ const ATLAS_MODEL_REGISTRY = [
       "consistency_review": 0.98,
       "factuality_review": 0.98,
       "safety_review": 0.98,
-      "schema_validation": 1.03
+      "schema_validation": 1.0
     },
     "version": "2026.1"
   },
@@ -1229,7 +1350,7 @@ const ATLAS_MODEL_REGISTRY = [
     "domains": {
       "document_qa": 1.0,
       "finance": 0.9342802463967982,
-      "general": 1.0104597813900535,
+      "general": 1.0,
       "legal": 1.0,
       "medical": 0.9359514635672622
     },
@@ -1244,7 +1365,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 20000,
       "total_latency_variance": 25000000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 4000.0
+      "ttft_ms_mean": 4000.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -1280,7 +1403,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 10.0,
       "output_cost": 30.0,
-      "relative_cost_score": 0.5
+      "relative_cost_score": 0.5,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Anthropic",
     "quality_distribution": {
@@ -1305,7 +1437,7 @@ const ATLAS_MODEL_REGISTRY = [
       "consistency_review": 0.98,
       "factuality_review": 0.98,
       "safety_review": 0.98,
-      "schema_validation": 1.03
+      "schema_validation": 1.0
     },
     "version": "2026.1"
   },
@@ -1338,10 +1470,10 @@ const ATLAS_MODEL_REGISTRY = [
     ],
     "domains": {
       "document_qa": 1.0,
-      "finance": 1.017569131450062,
-      "general": 1.0190896434502097,
+      "finance": 1.0,
+      "general": 1.0,
       "legal": 1.0,
-      "medical": 1.0005984257284108
+      "medical": 1.0
     },
     "evaluation": {
       "losses": 20,
@@ -1354,7 +1486,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 20000,
       "total_latency_variance": 25000000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 4000.0
+      "ttft_ms_mean": 4000.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -1390,7 +1524,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 10.0,
       "output_cost": 30.0,
-      "relative_cost_score": 0.5
+      "relative_cost_score": 0.5,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Anthropic",
     "quality_distribution": {
@@ -1415,7 +1558,7 @@ const ATLAS_MODEL_REGISTRY = [
       "consistency_review": 0.98,
       "factuality_review": 0.98,
       "safety_review": 0.98,
-      "schema_validation": 1.03
+      "schema_validation": 1.0
     },
     "version": "2026.1"
   },
@@ -1464,7 +1607,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 20000,
       "total_latency_variance": 25000000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 4000.0
+      "ttft_ms_mean": 4000.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -1500,7 +1645,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 10.0,
       "output_cost": 30.0,
-      "relative_cost_score": 0.5
+      "relative_cost_score": 0.5,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Anthropic",
     "quality_distribution": {
@@ -1525,7 +1679,7 @@ const ATLAS_MODEL_REGISTRY = [
       "consistency_review": 0.98,
       "factuality_review": 0.98,
       "safety_review": 0.98,
-      "schema_validation": 1.03
+      "schema_validation": 1.0
     },
     "version": "2026.1"
   },
@@ -1574,7 +1728,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -1610,7 +1766,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Anthropic",
     "quality_distribution": {
@@ -1684,7 +1849,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 5000,
       "total_latency_variance": 1000000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 1000.0
+      "ttft_ms_mean": 1000.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -1720,7 +1887,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 4.0,
       "output_cost": 12.0,
-      "relative_cost_score": 0.8
+      "relative_cost_score": 0.8,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Anthropic",
     "quality_distribution": {
@@ -1794,7 +1970,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -1830,7 +2008,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Anthropic",
     "quality_distribution": {
@@ -1904,7 +2091,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -1940,7 +2129,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Anthropic",
     "quality_distribution": {
@@ -2014,7 +2212,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -2050,7 +2250,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Anthropic",
     "quality_distribution": {
@@ -2124,7 +2333,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -2160,7 +2371,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Anthropic",
     "quality_distribution": {
@@ -2234,7 +2454,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -2270,7 +2492,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Google",
     "quality_distribution": {
@@ -2344,7 +2575,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -2380,7 +2613,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Google",
     "quality_distribution": {
@@ -2454,7 +2696,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -2490,7 +2734,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Google",
     "quality_distribution": {
@@ -2564,7 +2817,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -2600,7 +2855,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Google",
     "quality_distribution": {
@@ -2674,7 +2938,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -2710,7 +2976,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Google",
     "quality_distribution": {
@@ -2784,7 +3059,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -2820,7 +3097,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Google",
     "quality_distribution": {
@@ -2894,7 +3180,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -2930,7 +3218,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Google",
     "quality_distribution": {
@@ -3003,7 +3300,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -3039,7 +3338,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Google",
     "quality_distribution": {
@@ -3112,7 +3420,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -3148,7 +3458,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Google",
     "quality_distribution": {
@@ -3222,7 +3541,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 5000,
       "total_latency_variance": 1000000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 1000.0
+      "ttft_ms_mean": 1000.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -3258,7 +3579,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 4.0,
       "output_cost": 12.0,
-      "relative_cost_score": 0.8
+      "relative_cost_score": 0.8,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Meta",
     "quality_distribution": {
@@ -3332,7 +3662,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -3368,7 +3700,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Meta",
     "quality_distribution": {
@@ -3442,7 +3783,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -3478,7 +3821,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Meta",
     "quality_distribution": {
@@ -3552,7 +3904,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -3588,7 +3942,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Meta",
     "quality_distribution": {
@@ -3662,7 +4025,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -3698,7 +4063,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Meta",
     "quality_distribution": {
@@ -3772,7 +4146,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -3808,7 +4184,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Meta",
     "quality_distribution": {
@@ -3882,7 +4267,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -3918,7 +4305,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Meta",
     "quality_distribution": {
@@ -3992,7 +4388,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -4028,7 +4426,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Meta",
     "quality_distribution": {
@@ -4102,7 +4509,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -4138,7 +4547,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Meta",
     "quality_distribution": {
@@ -4211,7 +4629,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 5000,
       "total_latency_variance": 1000000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 1000.0
+      "ttft_ms_mean": 1000.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -4247,7 +4667,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 4.0,
       "output_cost": 12.0,
-      "relative_cost_score": 0.8
+      "relative_cost_score": 0.8,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "DeepSeek",
     "quality_distribution": {
@@ -4320,7 +4749,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 20000,
       "total_latency_variance": 25000000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 4000.0
+      "ttft_ms_mean": 4000.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -4356,7 +4787,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 10.0,
       "output_cost": 30.0,
-      "relative_cost_score": 0.5
+      "relative_cost_score": 0.5,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "DeepSeek",
     "quality_distribution": {
@@ -4381,7 +4821,7 @@ const ATLAS_MODEL_REGISTRY = [
       "consistency_review": 0.98,
       "factuality_review": 0.98,
       "safety_review": 0.98,
-      "schema_validation": 1.03
+      "schema_validation": 1.0
     },
     "version": "2026.1"
   },
@@ -4429,7 +4869,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -4465,7 +4907,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "DeepSeek",
     "quality_distribution": {
@@ -4538,7 +4989,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -4574,7 +5027,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "DeepSeek",
     "quality_distribution": {
@@ -4647,7 +5109,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -4683,7 +5147,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "DeepSeek",
     "quality_distribution": {
@@ -4756,7 +5229,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -4792,7 +5267,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "DeepSeek",
     "quality_distribution": {
@@ -4865,7 +5349,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 5000,
       "total_latency_variance": 1000000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 1000.0
+      "ttft_ms_mean": 1000.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -4901,7 +5387,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 4.0,
       "output_cost": 12.0,
-      "relative_cost_score": 0.8
+      "relative_cost_score": 0.8,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Alibaba (Qwen)",
     "quality_distribution": {
@@ -4974,7 +5469,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -5010,7 +5507,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Alibaba (Qwen)",
     "quality_distribution": {
@@ -5083,7 +5589,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -5119,7 +5627,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Alibaba (Qwen)",
     "quality_distribution": {
@@ -5192,7 +5709,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 5000,
       "total_latency_variance": 1000000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 1000.0
+      "ttft_ms_mean": 1000.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -5228,7 +5747,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 4.0,
       "output_cost": 12.0,
-      "relative_cost_score": 0.8
+      "relative_cost_score": 0.8,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Alibaba (Qwen)",
     "quality_distribution": {
@@ -5301,7 +5829,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 5000,
       "total_latency_variance": 1000000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 1000.0
+      "ttft_ms_mean": 1000.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -5337,7 +5867,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 4.0,
       "output_cost": 12.0,
-      "relative_cost_score": 0.8
+      "relative_cost_score": 0.8,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Alibaba (Qwen)",
     "quality_distribution": {
@@ -5410,7 +5949,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -5446,7 +5987,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Alibaba (Qwen)",
     "quality_distribution": {
@@ -5519,7 +6069,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -5555,7 +6107,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Alibaba (Qwen)",
     "quality_distribution": {
@@ -5628,7 +6189,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -5664,7 +6227,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Alibaba (Qwen)",
     "quality_distribution": {
@@ -5737,7 +6309,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 5000,
       "total_latency_variance": 1000000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 1000.0
+      "ttft_ms_mean": 1000.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -5773,7 +6347,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 4.0,
       "output_cost": 12.0,
-      "relative_cost_score": 0.8
+      "relative_cost_score": 0.8,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Mistral AI",
     "quality_distribution": {
@@ -5846,7 +6429,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 5000,
       "total_latency_variance": 1000000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 1000.0
+      "ttft_ms_mean": 1000.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -5882,7 +6467,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 4.0,
       "output_cost": 12.0,
-      "relative_cost_score": 0.8
+      "relative_cost_score": 0.8,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Mistral AI",
     "quality_distribution": {
@@ -5955,7 +6549,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -5991,7 +6587,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Mistral AI",
     "quality_distribution": {
@@ -6064,7 +6669,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -6100,7 +6707,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Mistral AI",
     "quality_distribution": {
@@ -6173,7 +6789,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -6209,7 +6827,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Mistral AI",
     "quality_distribution": {
@@ -6282,7 +6909,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -6318,7 +6947,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Mistral AI",
     "quality_distribution": {
@@ -6391,7 +7029,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -6427,7 +7067,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Mistral AI",
     "quality_distribution": {
@@ -6500,7 +7149,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 5000,
       "total_latency_variance": 1000000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 1000.0
+      "ttft_ms_mean": 1000.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -6536,7 +7187,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 4.0,
       "output_cost": 12.0,
-      "relative_cost_score": 0.8
+      "relative_cost_score": 0.8,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Mistral AI",
     "quality_distribution": {
@@ -6609,7 +7269,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 5000,
       "total_latency_variance": 1000000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 1000.0
+      "ttft_ms_mean": 1000.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -6645,7 +7307,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 4.0,
       "output_cost": 12.0,
-      "relative_cost_score": 0.8
+      "relative_cost_score": 0.8,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "xAI",
     "quality_distribution": {
@@ -6718,7 +7389,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -6754,7 +7427,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "xAI",
     "quality_distribution": {
@@ -6827,7 +7509,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -6863,7 +7547,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "xAI",
     "quality_distribution": {
@@ -6936,7 +7629,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -6972,7 +7667,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "xAI",
     "quality_distribution": {
@@ -7045,7 +7749,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -7081,7 +7787,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Microsoft",
     "quality_distribution": {
@@ -7154,7 +7869,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -7190,7 +7907,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Microsoft",
     "quality_distribution": {
@@ -7263,7 +7989,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -7299,7 +8027,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Microsoft",
     "quality_distribution": {
@@ -7372,7 +8109,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -7408,7 +8147,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Microsoft",
     "quality_distribution": {
@@ -7481,7 +8229,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -7517,7 +8267,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Microsoft",
     "quality_distribution": {
@@ -7590,7 +8349,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -7626,7 +8387,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Microsoft",
     "quality_distribution": {
@@ -7699,7 +8469,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -7735,7 +8507,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Cohere",
     "quality_distribution": {
@@ -7808,7 +8589,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 5000,
       "total_latency_variance": 1000000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 1000.0
+      "ttft_ms_mean": 1000.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -7844,7 +8627,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 4.0,
       "output_cost": 12.0,
-      "relative_cost_score": 0.8
+      "relative_cost_score": 0.8,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Cohere",
     "quality_distribution": {
@@ -7917,7 +8709,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -7953,7 +8747,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Cohere",
     "quality_distribution": {
@@ -8026,7 +8829,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 5000,
       "total_latency_variance": 1000000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 1000.0
+      "ttft_ms_mean": 1000.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -8062,7 +8867,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 4.0,
       "output_cost": 12.0,
-      "relative_cost_score": 0.8
+      "relative_cost_score": 0.8,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Moonshot AI",
     "quality_distribution": {
@@ -8135,7 +8949,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -8171,7 +8987,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Moonshot AI",
     "quality_distribution": {
@@ -8244,7 +9069,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -8280,7 +9107,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Moonshot AI",
     "quality_distribution": {
@@ -8353,7 +9189,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -8389,7 +9227,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Moonshot AI",
     "quality_distribution": {
@@ -8462,7 +9309,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -8498,7 +9347,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Z.ai / GLM",
     "quality_distribution": {
@@ -8571,7 +9429,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -8607,7 +9467,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Z.ai / GLM",
     "quality_distribution": {
@@ -8680,7 +9549,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 5000,
       "total_latency_variance": 1000000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 1000.0
+      "ttft_ms_mean": 1000.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -8716,7 +9587,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 4.0,
       "output_cost": 12.0,
-      "relative_cost_score": 0.8
+      "relative_cost_score": 0.8,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Z.ai / GLM",
     "quality_distribution": {
@@ -8789,7 +9669,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -8825,7 +9707,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Z.ai / GLM",
     "quality_distribution": {
@@ -8898,7 +9789,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -8934,7 +9827,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Z.ai / GLM",
     "quality_distribution": {
@@ -9007,7 +9909,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 5000,
       "total_latency_variance": 1000000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 1000.0
+      "ttft_ms_mean": 1000.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -9043,7 +9947,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 4.0,
       "output_cost": 12.0,
-      "relative_cost_score": 0.8
+      "relative_cost_score": 0.8,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "NVIDIA",
     "quality_distribution": {
@@ -9116,7 +10029,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -9152,7 +10067,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "NVIDIA",
     "quality_distribution": {
@@ -9225,7 +10149,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -9261,7 +10187,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "NVIDIA",
     "quality_distribution": {
@@ -9334,7 +10269,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -9370,7 +10307,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Amazon",
     "quality_distribution": {
@@ -9443,7 +10389,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 5000,
       "total_latency_variance": 1000000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 1000.0
+      "ttft_ms_mean": 1000.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -9479,7 +10427,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 4.0,
       "output_cost": 12.0,
-      "relative_cost_score": 0.8
+      "relative_cost_score": 0.8,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Amazon",
     "quality_distribution": {
@@ -9552,7 +10509,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -9588,7 +10547,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Amazon",
     "quality_distribution": {
@@ -9661,7 +10629,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -9697,7 +10667,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Amazon",
     "quality_distribution": {
@@ -9770,7 +10749,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -9806,7 +10787,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "IBM",
     "quality_distribution": {
@@ -9879,7 +10869,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -9915,7 +10907,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "IBM",
     "quality_distribution": {
@@ -9988,7 +10989,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 5000,
       "total_latency_variance": 1000000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 1000.0
+      "ttft_ms_mean": 1000.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -10024,7 +11027,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 4.0,
       "output_cost": 12.0,
-      "relative_cost_score": 0.8
+      "relative_cost_score": 0.8,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "AI21",
     "quality_distribution": {
@@ -10097,7 +11109,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -10133,7 +11147,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "AI21",
     "quality_distribution": {
@@ -10206,7 +11229,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 5000,
       "total_latency_variance": 1000000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 1000.0
+      "ttft_ms_mean": 1000.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -10242,7 +11267,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 4.0,
       "output_cost": 12.0,
-      "relative_cost_score": 0.8
+      "relative_cost_score": 0.8,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "01.AI",
     "quality_distribution": {
@@ -10315,7 +11349,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -10351,7 +11387,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "01.AI",
     "quality_distribution": {
@@ -10424,7 +11469,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -10460,7 +11507,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "01.AI",
     "quality_distribution": {
@@ -10533,7 +11589,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -10569,7 +11627,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "MiniMax",
     "quality_distribution": {
@@ -10642,7 +11709,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -10678,7 +11747,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "MiniMax",
     "quality_distribution": {
@@ -10751,7 +11829,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 300,
       "total_latency_variance": 10000,
       "tpot_ms_mean": 10.0,
-      "ttft_ms_mean": 60.0
+      "ttft_ms_mean": 60.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -10787,7 +11867,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.05,
       "output_cost": 0.15,
-      "relative_cost_score": 0.9975
+      "relative_cost_score": 0.9975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "MiniMax",
     "quality_distribution": {
@@ -10860,7 +11949,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 5000,
       "total_latency_variance": 1000000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 1000.0
+      "ttft_ms_mean": 1000.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": true,
@@ -10896,7 +11987,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 4.0,
       "output_cost": 12.0,
-      "relative_cost_score": 0.8
+      "relative_cost_score": 0.8,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Baidu",
     "quality_distribution": {
@@ -10969,7 +12069,9 @@ const ATLAS_MODEL_REGISTRY = [
       "total_latency_ms_mean": 1500,
       "total_latency_variance": 90000,
       "tpot_ms_mean": 30.0,
-      "ttft_ms_mean": 300.0
+      "ttft_ms_mean": 300.0,
+      "ttft_ms": 80,
+      "tokens_per_sec": 120
     },
     "modalities": {
       "audio": false,
@@ -11005,7 +12107,16 @@ const ATLAS_MODEL_REGISTRY = [
       "currency": "USD / 1M Tokens",
       "input_cost": 0.5,
       "output_cost": 1.5,
-      "relative_cost_score": 0.975
+      "relative_cost_score": 0.975,
+      "input_1m": 0.05,
+      "output_1m": 0.2
+    },
+    "priors": {
+      "global": {
+        "alpha": 1.0,
+        "beta": 1.0
+      },
+      "task_family": {}
     },
     "provider": "Baidu",
     "quality_distribution": {
