@@ -432,113 +432,124 @@
       };
     }
     function fallbackStructuredSemanticParse(prompt, inputFormats, estimatedTokens, artifacts) {
-      const p = prompt.toLowerCase();
-      let primary;
-      let secondary = [];
-      const requiredStages = [];
-      const workflowGraph = [];
-      let documentType = "generic";
-      const reasonParts = [];
-      if (inputFormats.includes("audio")) {
-        primary = "audio";
-        secondary = p.includes("summarize") ? ["summarization"] : ["chat"];
-        reasonParts.push("Audio input detected.");
-      } else if (inputFormats.includes("video")) {
-        primary = "vision";
-        secondary = ["audio", "summarization"];
-        reasonParts.push("Video input implies multimodal understanding.");
-      } else if (inputFormats.includes("image") && ["extract text", "ocr", "scan", "handwritten"].some(k => p.includes(k))) {
-        primary = "ocr";
-        secondary = ["summarize", "analyze", "tabulate"].some(k => p.includes(k)) ? ["document_qa"] : [];
-        reasonParts.push("Image OCR pattern detected.");
-      } else if (inputFormats.includes("pdf")) {
-        primary = "document_qa";
-        if (["summarize", "contract", "document", "obligations", "clause", "review"].some(k => p.includes(k))) {
-          secondary = ["summarization"];
-          reasonParts.push("PDF document understanding pattern detected.");
+      const p = (prompt || "").toLowerCase();
+      
+      const intentSignals = {
+        audio: [["summarize", 0.5], ["chat", 0.5]],
+        ocr: [["extract text", 1.0], ["ocr", 1.0], ["scan", 0.8], ["handwritten", 1.0]],
+        document_qa: [["summarize", 0.8], ["contract", 1.0], ["document", 0.6], ["obligations", 0.8], ["clause", 1.0], ["review", 0.7], ["tabulate", 0.8]],
+        coding: [["python", 1.0], ["bug", 0.8], ["debug", 1.0], ["algorithm", 0.8], ["implement", 0.7], ["code", 1.0], ["sql", 1.0], ["function", 0.6], ["class", 0.5], ["website", 0.8], ["html", 1.0], ["css", 1.0], ["javascript", 1.0], ["react", 1.0], ["frontend", 0.8], ["backend", 0.8], ["script", 0.7], ["ui/ux", 1.0], ["app", 0.5]],
+        agent: [["automate", 1.0], ["scrape", 1.0], ["bot", 1.0], ["agent", 1.0], ["orchestrate", 1.0], ["multi-step plan", 1.0], ["workflow", 0.8], ["autonomous", 1.0]],
+        mathematics: [["prove", 0.8], ["integral", 1.0], ["equation", 1.0], ["theorem", 1.0], ["calculate", 0.6], ["derivative", 1.0], ["math", 1.0]],
+        translation: [["translate", 1.0], ["spanish", 0.8], ["french", 0.8], ["language", 0.5], ["localization", 1.0], ["german", 0.8]],
+        reasoning: [["analyze", 0.8], ["derive", 0.8], ["compare", 0.7], ["reason", 0.8], ["evaluate", 0.7], ["assess", 0.7], ["think", 0.5], ["logic", 0.8]],
+        creative: [["image of", 1.0], ["picture of", 1.0], ["photo of", 1.0], ["generate an image", 1.0], ["draw", 1.0], ["video of", 1.0], ["generate a video", 1.0], ["create a video", 1.0], ["animation", 1.0], ["animate", 1.0], ["3d model", 1.0], ["cad", 1.0], ["obj file", 1.0], ["stl", 1.0], ["render", 0.8], ["generate music", 1.0], ["compose a song", 1.0], ["text to speech", 1.0], ["voiceover", 1.0], ["audiobook", 1.0], ["roleplay", 1.0], ["pretend to be", 1.0], ["game", 0.7], ["text adventure", 1.0], ["dnd", 1.0], ["write a blog", 1.0], ["essay", 1.0], ["marketing", 0.8], ["copywriting", 1.0], ["story", 1.0], ["generate an article", 1.0], ["email template", 1.0], ["newsletter", 1.0], ["cover letter", 1.0], ["resume", 1.0], ["poem", 1.0]],
+        research: [["search", 0.8], ["research", 1.0], ["find information", 1.0], ["latest news", 1.0], ["current events", 1.0], ["who is", 0.8], ["what happened", 0.8]],
+        education: [["explain", 0.8], ["teach me", 1.0], ["how does", 0.8], ["tutorial", 1.0], ["learn", 0.8], ["for a 5 year old", 1.0], ["what is", 0.6]],
+        data_analysis: [["data", 0.6], ["csv", 1.0], ["analytics", 1.0], ["metrics", 1.0], ["chart", 1.0], ["graph", 1.0]],
+        summarization: [["tl;dr", 1.0], ["tldr", 1.0], ["summarize this", 1.0], ["bullet points", 0.8], ["key takeaways", 1.0], ["summarize", 0.7]]
+      };
+
+      const intentScores = {};
+      if (inputFormats.includes("audio")) intentScores.audio = (intentScores.audio || 0) + 2.0;
+      if (inputFormats.includes("video")) intentScores.vision = (intentScores.vision || 0) + 2.0;
+      if (inputFormats.includes("pdf") || inputFormats.includes("spreadsheet")) intentScores.document_qa = (intentScores.document_qa || 0) + 1.5;
+      if (inputFormats.includes("image")) {
+        if (["extract text", "ocr", "scan", "handwritten"].some(k => p.includes(k))) {
+          intentScores.ocr = (intentScores.ocr || 0) + 2.0;
         } else {
-          reasonParts.push("PDF input defaults to document QA.");
+          intentScores.vision = (intentScores.vision || 0) + 1.0;
         }
-      } else if (inputFormats.includes("spreadsheet")) {
-        primary = "document_qa";
-        secondary = ["reasoning"];
-        reasonParts.push("Spreadsheet analysis pattern detected.");
-      } else if (["python", "bug", "debug", "algorithm", "implement", "code", "sql", "function", "class"].some(k => p.includes(k))) {
-        primary = "coding";
-        reasonParts.push("Coding intent detected.");
-      } else if (["prove", "integral", "equation", "theorem", "calculate", "derivative"].some(k => p.includes(k))) {
-        primary = "mathematics";
-        reasonParts.push("Mathematical reasoning detected.");
-      } else if (p.includes("translate")) {
-        primary = "translation";
-        reasonParts.push("Translation intent detected.");
-      } else if (["agent", "orchestrate", "multi-step plan", "workflow", "autonomous"].some(k => p.includes(k))) {
-        primary = "agent";
-        reasonParts.push("Agentic orchestration intent detected.");
-      } else if (["analyze", "derive", "compare", "reason", "evaluate", "assess"].some(k => p.includes(k))) {
-        primary = "reasoning";
-        reasonParts.push("General reasoning pattern detected.");
-      } else {
-        primary = "chat";
-        reasonParts.push("Defaulting to conversational task.");
       }
-      let domain;
-      let riskTier;
-      let riskType;
-      if (["medical", "diagnosis", "patient", "treatment", "symptom", "chest pain", "clinical"].some(k => p.includes(k))) {
-        domain = "medical";
-        riskTier = "high";
-        riskType = "regulated_advice";
-        documentType = "medical_record";
-      } else if (["legal", "contract", "compliance", "law", "litigation", "obligation", "clause"].some(k => p.includes(k))) {
-        domain = "legal";
-        riskTier = "high";
-        riskType = "regulated_advice";
-        documentType = "contract";
-      } else if (["finance", "tax", "investment", "trading", "portfolio", "stock"].some(k => p.includes(k))) {
-        domain = "finance";
-        riskTier = "high";
-        riskType = "regulated_advice";
-        documentType = "financial_document";
-      } else if (["security", "vulnerability", "exploit", "incident", "breach"].some(k => p.includes(k))) {
-        domain = "security";
-        riskTier = "high";
-        riskType = "security_sensitive";
-        documentType = "security_report";
-      } else if (p.includes("support ticket") || p.includes("customer") || p.includes("refund")) {
-        domain = "customer_support";
-        riskTier = "low";
-        riskType = "standard";
-        documentType = "support_record";
+
+      for (const [intent, keywords] of Object.entries(intentSignals)) {
+        for (const [kw, weight] of keywords) {
+          if (p.includes(kw)) {
+            intentScores[intent] = (intentScores[intent] || 0) + weight;
+          }
+        }
+      }
+
+      let primary = "chat";
+      let secondary = [];
+      const reasonParts = [];
+
+      const sortedIntents = Object.entries(intentScores).sort((a, b) => b[1] - a[1]);
+      if (sortedIntents.length > 0) {
+        primary = sortedIntents[0][0];
+        secondary = sortedIntents.slice(1).filter(item => item[1] > 0.5).map(item => item[0]);
+        reasonParts.push(`Intent scoring primary: ${primary} (${sortedIntents[0][1].toFixed(1)}).`);
+        if (secondary.length > 0) {
+          reasonParts.push(`Detected secondary intents: ${secondary.join(", ")}.`);
+        }
+      } else {
+        if (isSimpleConversationalPrompt(prompt)) {
+          reasonParts.push("Simple conversational prompt detected.");
+        } else {
+          reasonParts.push("No strong intents detected, defaulting to chat.");
+        }
+      }
+
+      const domainSignals = {
+        medical: ["medical", "diagnosis", "patient", "treatment", "symptom", "chest pain", "clinical", "prescription", "side effects", "disease", "therapy", "mental health", "depressed", "anxious", "suicidal", "need to talk", "lonely"],
+        legal: ["legal", "contract", "compliance", "law", "litigation", "obligation", "clause", "sue", "lawsuit", "court", "attorney", "nda", "terms of service"],
+        finance: ["finance", "tax", "investment", "trading", "portfolio", "stock", "crypto", "bitcoin", "mortgage", "loan", "interest rate"],
+        security: ["security", "vulnerability", "exploit", "incident", "breach", "ddos", "phishing", "malware", "ransomware", "bypass", "hack"],
+        sensitive: ["trump", "biden", "epstein", "election", "politics", "controversy", "nsfw", "porn", "violence", "kill", "bomb", "weapon", "illegal", "suicide", "self-harm", "drugs", "erotica", "sex", "nude", "naked", "fetish", "murder", "terrorist"],
+        customer_support: ["support ticket", "customer", "refund", "support"]
+      };
+
+      const domainScores = {};
+      for (const [dom, kws] of Object.entries(domainSignals)) {
+        for (const kw of kws) {
+          if (p.includes(kw)) {
+            domainScores[dom] = (domainScores[dom] || 0) + 1.0;
+          }
+        }
+      }
+
+      let domain = "general";
+      let riskTier = "low";
+      let riskType = "standard";
+      let documentType = "generic";
+
+      const sortedDomains = Object.entries(domainScores).sort((a, b) => b[1] - a[1]);
+      if (sortedDomains.length > 0) {
+        const topDomain = sortedDomains[0][0];
+        if (topDomain === "medical") { domain = "medical"; riskTier = "high"; riskType = "regulated_advice"; documentType = "medical_record"; }
+        else if (topDomain === "legal") { domain = "legal"; riskTier = "high"; riskType = "regulated_advice"; documentType = "contract"; }
+        else if (topDomain === "finance") { domain = "finance"; riskTier = "high"; riskType = "regulated_advice"; documentType = "financial_document"; }
+        else if (topDomain === "security") { domain = "security"; riskTier = "high"; riskType = "security_sensitive"; documentType = "security_report"; }
+        else if (topDomain === "sensitive") { domain = "sensitive"; riskTier = "high"; riskType = "safety_sensitive"; documentType = "controversial"; }
+        else if (topDomain === "customer_support") { domain = "customer_support"; riskTier = "low"; riskType = "standard"; documentType = "support_record"; }
       } else if (["coding", "agent"].includes(primary)) {
-        domain = "software";
-        riskTier = "medium";
-        riskType = "operational";
+        domain = "software"; riskTier = "medium"; riskType = "operational";
       } else if (["reasoning", "mathematics"].includes(primary)) {
-        domain = "science";
-        riskTier = "medium";
-        riskType = "analytical";
-      } else {
-        domain = "general";
-        riskTier = "low";
-        riskType = "standard";
+        domain = "science"; riskTier = "medium"; riskType = "analytical";
       }
-      const expectedOutput = ["json", "schema", "structured"].some(k => p.includes(k)) ? "structured_json" : primary === "coding" ? "code" : "free_text";
+
+      let expectedOutput = "free_text";
+      if (["json", "schema", "structured"].some(k => p.includes(k))) expectedOutput = "structured_json";
+      else if (primary === "coding") expectedOutput = "code";
+
       let ambiguityScore = 0.15;
       if (["maybe", "not sure", "either", "somehow", "approximately", "i think"].some(k => p.includes(k))) ambiguityScore = 0.55;
       if (["unclear", "ambiguous", "open-ended"].some(k => p.includes(k))) ambiguityScore = 0.75;
+      if (isSimpleConversationalPrompt(prompt)) ambiguityScore = 0.05;
+
       let actionability = "advisory";
       if (["do this", "execute", "send", "file", "submit", "trade", "prescribe"].some(k => p.includes(k))) actionability = "high";
+
       let decompositionNeeded = false;
       let needsVerification = false;
-      if (primary === "ocr") {
-        requiredStages.push("ocr");
-        if (["tabulate", "summarize", "analyze"].some(k => p.includes(k))) {
-          requiredStages.push("document_qa");
-          decompositionNeeded = true;
-        }
-      }
-      if (primary === "document_qa") {
+      const requiredStages = [];
+      const combinedIntents = [primary, ...secondary];
+
+      if (combinedIntents.includes("ocr")) requiredStages.push("ocr");
+      if (combinedIntents.includes("vision")) requiredStages.push("vision_understanding");
+      if (combinedIntents.includes("audio")) requiredStages.push("audio_understanding");
+
+      if (combinedIntents.includes("document_qa")) {
         requiredStages.push("document_qa");
         if (["legal", "medical", "finance"].includes(domain)) {
           requiredStages.push("domain_reasoning");
@@ -546,20 +557,19 @@
           needsVerification = true;
         }
       }
-      if (expectedOutput === "structured_json") requiredStages.push("structured_output");
-      if (primary === "audio") {
-        requiredStages.push("audio_understanding");
-        if (p.includes("summarize")) {
-          requiredStages.push("summarization");
-          decompositionNeeded = true;
+
+      for (const i of combinedIntents) {
+        if (!["ocr", "vision", "audio", "document_qa"].includes(i) && !requiredStages.includes(i)) {
+          requiredStages.push(i);
         }
       }
-      if (primary === "vision") requiredStages.push("vision_understanding");
-      if (primary === "coding") {
-        requiredStages.push("coding");
-        requiredStages.push("reasoning");
-      }
-      if (!requiredStages.length) requiredStages.push(primary);
+
+      if (expectedOutput === "structured_json") requiredStages.push("structured_output");
+
+      if (requiredStages.length === 0) requiredStages.push(primary);
+      else if (requiredStages.length > 1) decompositionNeeded = true;
+
+      const workflowGraph = [];
       requiredStages.forEach((stage, idx) => {
         workflowGraph.push({
           stage_id: idx + 1,
@@ -567,9 +577,11 @@
           depends_on: idx === 0 ? [] : [idx]
         });
       });
+
       let parserConfidence = 0.78;
       if (ambiguityScore > 0.5) parserConfidence -= 0.15;
       if (decompositionNeeded) parserConfidence -= 0.05;
+
       return {
         primary_family: primary,
         secondary_families: secondary,
@@ -876,12 +888,17 @@
       let inCost = model.pricing?.input_cost || 0.0;
       if (isCached) inCost *= 0.5;
       
+      let inToks = inputTokens;
+      if (inToks === undefined || inToks === null || isNaN(inToks)) {
+        inToks = 500;
+      }
+      
       let outTokens = outputTokens;
       if (outTokens === undefined || outTokens === null || isNaN(outTokens)) {
         outTokens = 50; 
       }
       
-      return ((inputTokens / 1_000_000) * inCost) +
+      return ((inToks / 1_000_000) * inCost) +
         ((outTokens / 1_000_000) * (model.pricing?.output_cost || 0.0));
     }
     

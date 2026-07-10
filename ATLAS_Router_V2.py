@@ -820,108 +820,124 @@ def deterministic_extract(prompt: str, input_formats: List[str], estimated_token
     }
 
 
+def is_simple_conversational_prompt(prompt: str) -> bool:
+    import re
+    normalized = re.sub(r'[^\w\s]', '', (prompt or "").strip().lower())
+    words = [w for w in normalized.split() if w]
+    simple_phrases = {
+        "hi", "hello", "hey", "yo", "how are you", "hi how are you",
+        "hello how are you", "hey how are you", "good morning", "good afternoon",
+        "good evening", "thanks", "thank you"
+    }
+    is_simple = len(words) <= 6 and (normalized in simple_phrases or (words and words[0] in {"hi", "hello", "hey"}))
+    return is_simple
+
+
 def fallback_structured_semantic_parse(
     prompt: str,
     input_formats: List[str],
     estimated_tokens: int,
     artifacts: List[ArtifactProfile]
 ) -> StructuredSemanticParse:
-    """Heuristic parser. Optionally we can replace it with a real structured LLM parser."""
+    """Heuristic parser with intent scoring for multi-intent detection."""
+    from collections import defaultdict
     p = prompt.lower()
-    secondary: List[str] = []
-    required_stages: List[str] = []
-    workflow_graph: List[Dict[str, Any]] = []
-    document_type = "generic"
-    reason_parts = []
-    # Primary family detection
+    
+    # 1. Keyword to Intent Mapping with weights
+    intent_signals = {
+        "audio": [("summarize", 0.5), ("chat", 0.5)],
+        "ocr": [("extract text", 1.0), ("ocr", 1.0), ("scan", 0.8), ("handwritten", 1.0)],
+        "document_qa": [("summarize", 0.8), ("contract", 1.0), ("document", 0.6), ("obligations", 0.8), ("clause", 1.0), ("review", 0.7), ("tabulate", 0.8)],
+        "coding": [("python", 1.0), ("bug", 0.8), ("debug", 1.0), ("algorithm", 0.8), ("implement", 0.7), ("code", 1.0), ("sql", 1.0), ("function", 0.6), ("class", 0.5), ("website", 0.8), ("html", 1.0), ("css", 1.0), ("javascript", 1.0), ("react", 1.0), ("frontend", 0.8), ("backend", 0.8), ("script", 0.7), ("ui/ux", 1.0), ("app", 0.5)],
+        "agent": [("automate", 1.0), ("scrape", 1.0), ("bot", 1.0), ("agent", 1.0), ("orchestrate", 1.0), ("multi-step plan", 1.0), ("workflow", 0.8), ("autonomous", 1.0)],
+        "mathematics": [("prove", 0.8), ("integral", 1.0), ("equation", 1.0), ("theorem", 1.0), ("calculate", 0.6), ("derivative", 1.0), ("math", 1.0)],
+        "translation": [("translate", 1.0), ("spanish", 0.8), ("french", 0.8), ("language", 0.5), ("localization", 1.0), ("german", 0.8)],
+        "reasoning": [("analyze", 0.8), ("derive", 0.8), ("compare", 0.7), ("reason", 0.8), ("evaluate", 0.7), ("assess", 0.7), ("think", 0.5), ("logic", 0.8)],
+        "creative": [("image of", 1.0), ("picture of", 1.0), ("photo of", 1.0), ("generate an image", 1.0), ("draw", 1.0), ("video of", 1.0), ("generate a video", 1.0), ("create a video", 1.0), ("animation", 1.0), ("animate", 1.0), ("3d model", 1.0), ("cad", 1.0), ("obj file", 1.0), ("stl", 1.0), ("render", 0.8), ("generate music", 1.0), ("compose a song", 1.0), ("text to speech", 1.0), ("voiceover", 1.0), ("audiobook", 1.0), ("roleplay", 1.0), ("pretend to be", 1.0), ("game", 0.7), ("text adventure", 1.0), ("dnd", 1.0), ("write a blog", 1.0), ("essay", 1.0), ("marketing", 0.8), ("copywriting", 1.0), ("story", 1.0), ("generate an article", 1.0), ("email template", 1.0), ("newsletter", 1.0), ("cover letter", 1.0), ("resume", 1.0), ("poem", 1.0)],
+        "research": [("search", 0.8), ("research", 1.0), ("find information", 1.0), ("latest news", 1.0), ("current events", 1.0), ("who is", 0.8), ("what happened", 0.8)],
+        "education": [("explain", 0.8), ("teach me", 1.0), ("how does", 0.8), ("tutorial", 1.0), ("learn", 0.8), ("for a 5 year old", 1.0), ("what is", 0.6)],
+        "data_analysis": [("data", 0.6), ("csv", 1.0), ("analytics", 1.0), ("metrics", 1.0), ("chart", 1.0), ("graph", 1.0)],
+        "summarization": [("tl;dr", 1.0), ("tldr", 1.0), ("summarize this", 1.0), ("bullet points", 0.8), ("key takeaways", 1.0), ("summarize", 0.7)]
+    }
+
+    # 2. Score Intents
+    intent_scores = defaultdict(float)
+    
+    # Implicit format intents
     if any(fmt == "audio" for fmt in input_formats):
-        primary = "audio"
-        secondary = ["summarization"] if "summarize" in p else ["chat"]
-        reason_parts.append("Audio input detected.")
-    elif any(fmt == "video" for fmt in input_formats):
-        primary = "vision"
-        secondary = ["audio", "summarization"]
-        reason_parts.append("Video input implies multimodal understanding.")
-    elif any(fmt == "image" for fmt in input_formats) and any(k in p for k in ["extract text", "ocr", "scan", "handwritten"]):
-        primary = "ocr"
-        secondary = ["document_qa"] if any(k in p for k in ["summarize", "analyze", "tabulate"]) else []
-        reason_parts.append("Image OCR pattern detected.")
-    elif any(fmt == "pdf" for fmt in input_formats):
-        if any(k in p for k in ["summarize", "contract", "document", "obligations", "clause", "review"]):
-            primary = "document_qa"
-            secondary = ["summarization"]
-            reason_parts.append("PDF document understanding pattern detected.")
+        intent_scores["audio"] += 2.0
+    if any(fmt == "video" for fmt in input_formats):
+        intent_scores["vision"] += 2.0
+    if any(fmt == "pdf" for fmt in input_formats) or any(fmt == "spreadsheet" for fmt in input_formats):
+        intent_scores["document_qa"] += 1.5
+    if any(fmt == "image" for fmt in input_formats):
+        if any(k in p for k in ["extract text", "ocr", "scan", "handwritten"]):
+            intent_scores["ocr"] += 2.0
         else:
-            primary = "document_qa"
-            reason_parts.append("PDF input defaults to document QA.")
-    elif any(fmt == "spreadsheet" for fmt in input_formats):
-        primary = "document_qa"
-        secondary = ["reasoning"]
-        reason_parts.append("Spreadsheet analysis pattern detected.")
-    elif any(k in p for k in ["python", "bug", "debug", "algorithm", "implement", "code", "sql", "function", "class", "website", "html", "css", "javascript", "react", "frontend", "backend", "script", "ui/ux", "app"]):
-        primary = "coding"
-        reason_parts.append("Coding intent detected.")
-    elif any(k in p for k in ["automate", "scrape", "bot", "agent", "orchestrate", "multi-step plan", "workflow", "autonomous"]):
-        primary = "agent"
-        reason_parts.append("Agentic orchestration intent detected.")
-    elif any(k in p for k in ["prove", "integral", "equation", "theorem", "calculate", "derivative"]):
-        primary = "mathematics"
-        reason_parts.append("Mathematical reasoning detected.")
-    elif any(k in p for k in ["translate", "spanish", "french", "language", "localization"]):
-        primary = "translation"
-        reason_parts.append("Translation intent detected.")
-    elif any(k in p for k in ["analyze", "derive", "compare", "reason", "evaluate", "assess"]):
-        primary = "reasoning"
-        reason_parts.append("General reasoning pattern detected.")
-    elif any(k in p for k in ["image of", "picture of", "photo of", "generate an image", "draw", "video of", "generate a video", "create a video", "animation", "animate", "3d model", "cad", "obj file", "stl", "render", "generate music", "compose a song", "text to speech", "voiceover", "audiobook"]):
-        primary = "creative"
-        reason_parts.append("Multimodal generation or creative intent detected.")
-    elif any(k in p for k in ["roleplay", "pretend to be", "game", "text adventure", "dnd", "dungeons and dragons"]):
-        primary = "creative"
-        reason_parts.append("Roleplay or gaming intent detected.")
-    elif any(k in p for k in ["write a blog", "essay", "marketing", "copywriting", "story", "generate an article", "email template", "newsletter", "cover letter", "resume", "poem"]):
-        primary = "creative"
-        reason_parts.append("Creative writing or drafting intent detected.")
-    elif any(k in p for k in ["search", "research", "find information", "latest news", "current events", "who is", "what happened"]):
-        primary = "research"
-        reason_parts.append("Web search or research intent detected.")
-    elif any(k in p for k in ["explain", "teach me", "how does", "tutorial", "learn", "for a 5 year old", "what is"]):
-        primary = "education"
-        reason_parts.append("Educational or tutoring intent detected.")
-    elif any(k in p for k in ["data", "csv", "analytics", "metrics", "chart", "graph"]):
-        primary = "data_analysis"
-        reason_parts.append("Data analysis intent detected.")
-    elif any(k in p for k in ["tl;dr", "tldr", "summarize this", "bullet points", "key takeaways"]):
-        primary = "summarization"
-        reason_parts.append("Standalone summarization intent detected.")
+            intent_scores["vision"] += 1.0
+
+    # Keyword scoring
+    for intent, keywords in intent_signals.items():
+        for kw, weight in keywords:
+            if kw in p:
+                intent_scores[intent] += weight
+
+    # 3. Determine Primary and Secondary
+    primary = "chat"
+    secondary = []
+    reason_parts = []
+    
+    if intent_scores:
+        sorted_intents = sorted(intent_scores.items(), key=lambda x: x[1], reverse=True)
+        primary = sorted_intents[0][0]
+        secondary = [intent for intent, score in sorted_intents[1:] if score > 0.5]
+        reason_parts.append(f"Intent scoring primary: {primary} ({sorted_intents[0][1]:.1f}).")
+        if secondary:
+            reason_parts.append(f"Detected secondary intents: {', '.join(secondary)}.")
     else:
-        primary = "chat"
-        reason_parts.append("Defaulting to conversational task.")
-    # Domain, risk tier, risk type detection
-    if any(k in p for k in ["medical", "diagnosis", "patient", "treatment", "symptom", "chest pain", "clinical", "prescription", "side effects", "disease", "therapy", "mental health", "depressed", "anxious", "suicidal", "need to talk", "lonely"]):
-        domain, risk_tier, risk_type = "medical", "high", "regulated_advice"
-        document_type = "medical_record"
-    elif any(k in p for k in ["legal", "contract", "compliance", "law", "litigation", "obligation", "clause", "sue", "lawsuit", "court", "attorney", "nda", "terms of service"]):
-        domain, risk_tier, risk_type = "legal", "high", "regulated_advice"
-        document_type = "contract"
-    elif any(k in p for k in ["finance", "tax", "investment", "trading", "portfolio", "stock", "crypto", "bitcoin", "mortgage", "loan", "interest rate"]):
-        domain, risk_tier, risk_type = "finance", "high", "regulated_advice"
-        document_type = "financial_document"
-    elif any(k in p for k in ["security", "vulnerability", "exploit", "incident", "breach", "ddos", "phishing", "malware", "ransomware", "bypass", "hack"]):
-        domain, risk_tier, risk_type = "security", "high", "security_sensitive"
-        document_type = "security_report"
-    elif any(k in p for k in ["trump", "biden", "epstein", "election", "politics", "controversy", "nsfw", "porn", "violence", "kill", "bomb", "weapon", "illegal", "suicide", "self-harm", "drugs", "erotica", "sex", "nude", "naked", "fetish", "murder", "terrorist"]):
-        domain, risk_tier, risk_type = "sensitive", "high", "safety_sensitive"
-        document_type = "controversial"
-    elif "support ticket" in p or "customer" in p or "refund" in p:
-        domain, risk_tier, risk_type = "customer_support", "low", "standard"
-        document_type = "support_record" 
+        if is_simple_conversational_prompt(prompt):
+            reason_parts.append("Simple conversational prompt detected.")
+        else:
+            reason_parts.append("No strong intents detected, defaulting to chat.")
+
+    # 4. Domain, risk tier, risk type detection (scoring based as well)
+    domain_signals = {
+        "medical": ["medical", "diagnosis", "patient", "treatment", "symptom", "chest pain", "clinical", "prescription", "side effects", "disease", "therapy", "mental health", "depressed", "anxious", "suicidal", "need to talk", "lonely"],
+        "legal": ["legal", "contract", "compliance", "law", "litigation", "obligation", "clause", "sue", "lawsuit", "court", "attorney", "nda", "terms of service"],
+        "finance": ["finance", "tax", "investment", "trading", "portfolio", "stock", "crypto", "bitcoin", "mortgage", "loan", "interest rate"],
+        "security": ["security", "vulnerability", "exploit", "incident", "breach", "ddos", "phishing", "malware", "ransomware", "bypass", "hack"],
+        "sensitive": ["trump", "biden", "epstein", "election", "politics", "controversy", "nsfw", "porn", "violence", "kill", "bomb", "weapon", "illegal", "suicide", "self-harm", "drugs", "erotica", "sex", "nude", "naked", "fetish", "murder", "terrorist"],
+        "customer_support": ["support ticket", "customer", "refund", "support"]
+    }
+    
+    domain_scores = defaultdict(float)
+    for dom, kws in domain_signals.items():
+        for kw in kws:
+            if kw in p:
+                domain_scores[dom] += 1.0
+                
+    document_type = "generic"
+    if domain_scores:
+        top_domain = sorted(domain_scores.items(), key=lambda x: x[1], reverse=True)[0][0]
+        if top_domain == "medical":
+            domain, risk_tier, risk_type, document_type = "medical", "high", "regulated_advice", "medical_record"
+        elif top_domain == "legal":
+            domain, risk_tier, risk_type, document_type = "legal", "high", "regulated_advice", "contract"
+        elif top_domain == "finance":
+            domain, risk_tier, risk_type, document_type = "finance", "high", "regulated_advice", "financial_document"
+        elif top_domain == "security":
+            domain, risk_tier, risk_type, document_type = "security", "high", "security_sensitive", "security_report"
+        elif top_domain == "sensitive":
+            domain, risk_tier, risk_type, document_type = "sensitive", "high", "safety_sensitive", "controversial"
+        elif top_domain == "customer_support":
+            domain, risk_tier, risk_type, document_type = "customer_support", "low", "standard", "support_record"
     elif primary in ("coding", "agent"):
         domain, risk_tier, risk_type = "software", "medium", "operational"
     elif primary in ("reasoning", "mathematics"):
         domain, risk_tier, risk_type = "science", "medium", "analytical"
     else:
         domain, risk_tier, risk_type = "general", "low", "standard"
+        
     # Expected output
     if any(k in p for k in ["json", "schema", "structured"]):
         expected_output = "structured_json"
@@ -929,56 +945,71 @@ def fallback_structured_semantic_parse(
         expected_output = "code"
     else:
         expected_output = "free_text"
+        
     # Ambiguity
     ambiguity_score = 0.15
     if any(k in p for k in ["maybe", "not sure", "either", "somehow", "approximately", "i think"]):
         ambiguity_score = 0.55
     if any(k in p for k in ["unclear", "ambiguous", "open-ended"]):
         ambiguity_score = 0.75
+        
+    if is_simple_conversational_prompt(prompt):
+        ambiguity_score = 0.05
+        
     # Actionability
     actionability = "advisory"
     if any(k in p for k in ["do this", "execute", "send", "file", "submit", "trade", "prescribe"]):
         actionability = "high"
+        
     # Decomposition and stages
+    required_stages = []
     decomposition_needed = False
     needs_verification = False
-    if primary == "ocr":
+    
+    combined_intents = [primary] + secondary
+    
+    if "ocr" in combined_intents:
         required_stages.append("ocr")
-        if any(k in p for k in ["tabulate", "summarize", "analyze"]):
-            required_stages.append("document_qa")
-            decomposition_needed = True
-    if primary == "document_qa":
+    if "vision" in combined_intents:
+        required_stages.append("vision_understanding")
+    if "audio" in combined_intents:
+        required_stages.append("audio_understanding")
+        
+    if "document_qa" in combined_intents:
         required_stages.append("document_qa")
         if domain in {"legal", "medical", "finance"}:
             required_stages.append("domain_reasoning")
             decomposition_needed = True
             needs_verification = True
+            
+    for i in combined_intents:
+        if i not in ["ocr", "vision", "audio", "document_qa"] and i not in required_stages:
+            required_stages.append(i)
+            
     if expected_output == "structured_json":
         required_stages.append("structured_output")
-    if primary == "audio":
-        required_stages.append("audio_understanding")
-        if "summarize" in p:
-            required_stages.append("summarization")
-            decomposition_needed = True
-    if primary == "vision":
-        required_stages.append("vision_understanding")
-    if primary == "coding":
-        required_stages.append("coding")
-    if not required_stages:
+        
+    if len(required_stages) == 0:
         required_stages.append(primary)
-    # Build workflow graph (linear chain by default)
+    elif len(required_stages) > 1:
+        decomposition_needed = True
+        
+    # Build workflow graph
+    workflow_graph = []
     for i, stage in enumerate(required_stages):
         workflow_graph.append({
             "stage_id": i + 1,
             "stage_name": stage,
             "depends_on": [] if i == 0 else [i]
         })
-    # Parser confidence — lower for ambiguous or multi-stage tasks
+        
+    # Parser confidence
     parser_confidence = 0.78
     if ambiguity_score > 0.5:
         parser_confidence -= 0.15
     if decomposition_needed:
         parser_confidence -= 0.05
+        
     return StructuredSemanticParse(
         primary_family=primary,
         secondary_families=secondary,
@@ -1061,6 +1092,8 @@ def infer_workflow_profile(
         return "high_risk"
     if complexity == "high":
         return "complex_reasoning"
+    if primary_family == "chat" and domain == "general" and is_simple_conversational_prompt(prompt):
+        return "latency_first"
     # ── Domain-based quality profiles ─────────────────────────────────────────
     if domain in {"legal", "medical", "finance", "security"}:
         if domain == "legal" and "contract" in p:
@@ -1331,7 +1364,9 @@ def effective_prior(model: Dict[str, Any], family: str) -> Tuple[float, float]:
     return alpha, beta
 
 
-def estimate_request_cost_usd(model: Dict[str, Any], input_tokens: int, output_tokens: Optional[int], is_cached: bool = False) -> float:
+def estimate_request_cost_usd(model: Dict[str, Any], input_tokens: Optional[int], output_tokens: Optional[int], is_cached: bool = False) -> float:
+    if input_tokens is None:
+        input_tokens = 500
     if output_tokens is None:
         output_tokens = 50  # Provide a safe default for cost estimation when not specified
     return ((input_tokens / 1_000_000) * model["pricing"]["input_cost"] +
@@ -1841,7 +1876,7 @@ def generate_multi_stage_plan(
         return None
     n_stages = len(task.required_stages)
     in_per_stage = max(task.estimated_tokens // n_stages, 1)
-    out_per_stage = max(task.estimated_output_tokens // n_stages, 1)
+    out_per_stage = max((task.estimated_output_tokens or 500) // n_stages, 1)
     stage_routes: List[StageRoute] = []
     total_latency = 0.0
     total_cost = 0.0

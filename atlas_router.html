@@ -110,11 +110,23 @@
     .gauge-content strong { font-size: 30px; }
     .gauge-content span { color: var(--muted); font-size: 12px; }
     @media (max-width: 980px) {
-      .topbar { position: static; padding: 16px; align-items: flex-start; gap: 16px; flex-direction: column; }
-      .layout { grid-template-columns: 1fr; padding: 16px; gap: 16px; }
-      .panel.sticky { position: static; max-height: none; }
-      .decision-hero, .kpi-grid { grid-template-columns: 1fr; }
-      .selected-card, .chart-card, .panel { padding: 24px; }
+      .topbar { padding: 16px; flex-direction: column; align-items: flex-start; gap: 12px; }
+      .layout { display: flex; flex-direction: column; padding: 16px; gap: 16px; overflow-y: auto; }
+      .panel { height: auto; overflow: visible; padding: 20px; }
+      .main-content { height: auto; overflow: visible; padding: 0 0 20px 0; }
+      .decision-hero { grid-template-columns: 1fr; gap: 16px; }
+      .kpi-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .selected-card, .chart-card { padding: 20px; }
+      .grid-2 { grid-template-columns: 1fr; }
+      .selected-model { font-size: 32px; }
+      .gauge { width: 140px; }
+    }
+    @media (max-width: 480px) {
+      .kpi-grid { grid-template-columns: 1fr; }
+      .topbar-stats { flex-direction: column; align-items: flex-start; gap: 8px; width: 100%; }
+      .modal { width: 95vw; }
+      .modal-header, .modal-controls, .modal-body { padding: 12px; }
+      .bar-row { grid-template-columns: 1fr; gap: 8px; }
     }
     
     .toast { position: fixed; bottom: 24px; right: 24px; background: rgba(15, 29, 50, 0.95); border: 1px solid var(--border); padding: 16px 24px; border-radius: 14px; box-shadow: var(--shadow); z-index: 1000; transition: all 0.3s; }
