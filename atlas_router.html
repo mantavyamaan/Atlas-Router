@@ -79,7 +79,7 @@
     .main-content { min-width: 0; height: 100%; overflow-y: auto; padding-right: 16px; padding-bottom: 32px; }
     .decision-hero { display: grid; grid-template-columns: minmax(0, 2fr) minmax(240px, 1fr); gap: 24px; margin-bottom: 32px; scroll-margin-top: 20px; }
     .selected-card, .chart-card { background: linear-gradient(145deg, rgba(30,41,59,0.5), rgba(15,23,42,0.8)); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 40px; box-shadow: var(--shadow); min-width: 0; }
-    .status-row { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 18px; }
+    .status-row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 18px; }
     .selected-model { font-size: clamp(28px, 4vw, 48px); line-height: 1.05; overflow-wrap: anywhere; margin-bottom: 12px; }
     .selected-meta { color: var(--muted); font-size: 16px; margin: 0 0 32px; }
     .hero-card { background: linear-gradient(145deg, rgba(30,41,59,0.5), rgba(15,23,42,0.8)); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 40px; position: relative; overflow: hidden; }
@@ -92,10 +92,11 @@
     .empty-state { text-align: center; padding: 100px 20px; }
     .empty-state .icon { font-size: 64px; margin-bottom: 24px; opacity: 0.5; }
     
-    table { width: 100%; border-collapse: separate; border-spacing: 0 8px; margin-top: 16px; }
+    table { width: 100%; border-collapse: separate; border-spacing: 0 8px; margin-top: 16px; white-space: nowrap; }
     th { text-align: left; padding: 0 16px 8px; font-size: 12px; text-transform: uppercase; color: var(--muted); font-weight: 600; }
     td { padding: 16px; background: rgba(255,255,255,0.02); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-    .bar-row { display: grid; align-items: center; gap: 16px; }
+    .bar-row { display: flex; align-items: flex-start; gap: 12px; }
+    .conf-bar-row { display: grid; grid-template-columns: 140px 1fr; align-items: center; gap: 16px; }
     .bar-track { height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; }
     .bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent-2)); border-radius: 3px; }
     .badge { padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 700; display: inline-block; }
@@ -126,7 +127,7 @@
       .topbar-stats { flex-direction: column; align-items: flex-start; gap: 8px; width: 100%; }
       .modal { width: 95vw; }
       .modal-header, .modal-controls, .modal-body { padding: 12px; }
-      .bar-row { grid-template-columns: 1fr; gap: 8px; }
+      .conf-bar-row { grid-template-columns: 1fr; gap: 8px; }
     }
     
     .toast { position: fixed; bottom: 24px; right: 24px; background: rgba(15, 29, 50, 0.95); border: 1px solid var(--border); padding: 16px 24px; border-radius: 14px; box-shadow: var(--shadow); z-index: 1000; transition: all 0.3s; }

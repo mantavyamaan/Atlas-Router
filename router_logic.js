@@ -1385,7 +1385,7 @@
             <td><div class="rank">${idx + 1}</div></td>
             <td><strong>${id}</strong></td>
             <td>
-              <div class="bar-row" style="grid-template-columns: 140px 1fr 40px;">
+              <div class="conf-bar-row">
                 <div class="bar-track"><div class="bar-fill" style="width: ${conf}%;"></div></div>
                 <span>${conf}%</span>
               </div>
