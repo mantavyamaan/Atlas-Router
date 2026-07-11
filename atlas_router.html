@@ -92,7 +92,7 @@
     .empty-state { text-align: center; padding: 100px 20px; }
     .empty-state .icon { font-size: 64px; margin-bottom: 24px; opacity: 0.5; }
     
-    table { width: 100%; border-collapse: separate; border-spacing: 0 8px; margin-top: 16px; white-space: nowrap; }
+    table { width: 100%; border-collapse: separate; border-spacing: 0 8px; margin-top: 16px; }
     th { text-align: left; padding: 0 16px 8px; font-size: 12px; text-transform: uppercase; color: var(--muted); font-weight: 600; }
     td { padding: 16px; background: rgba(255,255,255,0.02); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
     .bar-row { display: flex; align-items: flex-start; gap: 12px; }
@@ -127,7 +127,18 @@
       .topbar-stats { flex-direction: column; align-items: flex-start; gap: 8px; width: 100%; }
       .modal { width: 95vw; }
       .modal-header, .modal-controls, .modal-body { padding: 12px; }
-      .conf-bar-row { grid-template-columns: 1fr; gap: 8px; }
+      .conf-bar-row { grid-template-columns: 60px auto; gap: 8px; }
+      th, td { padding: 12px 6px; font-size: 11px; }
+      .table-wrap table { table-layout: fixed; }
+      th:nth-child(1) { width: 32px; }
+      th:nth-child(2) { width: auto; }
+      th:nth-child(3) { width: 90px; }
+      th:nth-child(4) { width: 60px; }
+      td:nth-child(2) { word-wrap: break-word; overflow-wrap: break-word; white-space: normal; }
+      .kpi { padding: 12px; }
+      .kpi strong { font-size: 20px; }
+      .selected-model { font-size: 26px; }
+      .selected-card { padding: 16px; }
     }
     
     .toast { position: fixed; bottom: 24px; right: 24px; background: rgba(15, 29, 50, 0.95); border: 1px solid var(--border); padding: 16px 24px; border-radius: 14px; box-shadow: var(--shadow); z-index: 1000; transition: all 0.3s; }
