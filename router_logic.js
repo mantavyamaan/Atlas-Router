@@ -64,9 +64,2012 @@
       }
     };
     // === MEMORY BANK (Evolving Parser) ===
+const PRETRAINED_MEMORY = [
+  {
+    "prompt": "translate this statistics formula into french",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "tldr of how python works",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "extract data from this security chart",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "review the gaming obligations carefully",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "extract the medical terms from this pdf",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "french translation for rust code comments",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "review the rust documentation pdf",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "translate the react documentation into french",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "localization of this medical app to german",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "create a beautiful ui mockup for security",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "reason through this probability proof",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "summarize the history of topology",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "prove the geometry theorem using python",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "summarize the calculus research paper",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "derive the algebra equation step by step",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "how to kill a rust process",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "teach me the math behind security models",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "how to translate gaming logically",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "build a sql bot to automate this workflow",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "what are the latest trends in legal",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "analyze the startup analytics dashboard",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "how to kill a c++ process",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "how to translate marketing logically",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "prove the topology theorem using python",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "translate this gaming data chart into french",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "what is ai in simple terms",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "think step by step about this marketing problem",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "derive the geometry equation step by step",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "review the html documentation pdf",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "tutorial on geometry basics",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "compare the logic of c++ and php",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "chart the gaming metrics over time",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "review this gaming document clause",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "explain gaming for a 5 year old",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "research ai translation models",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "translate the rust documentation into french",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "write a poem about robotics data analysis",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "what is a react object in programming",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "teach me how python works",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "generate an image of a robotics dashboard",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "translate this ai poem to german",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "calculate the integral of finance growth",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "what does this ai agreement state",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "summarize the history of topology",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "plot the probability data points",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "what is the mathematical logic behind statistics",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "what is the mathematical logic behind geometry",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "analyze the startup analytics dashboard",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "evaluate the marketing arguments step by step",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "plot the calculus data points",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "how does calculus work in data analytics",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "summarize the medical translation rules",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "evaluate the cloud arguments step by step",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "write a story about a python developer",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "translate this ai data chart into french",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "translate this security data chart into french",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "draw a gui in javascript",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "draw a gui in javascript",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "how does a c++ spider work on the web",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "derive the topology equation step by step",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "compare the calculus and marketing theories",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "teach me how react works",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "translate the c++ documentation into french",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "derive the probability equation step by step",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "pretend to be a finance and write an essay",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "extract the gaming terms from this pdf",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "summarize the marketing translation rules",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "summarize this finance article using bullet points",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "compare the logic of javascript and swift",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "what are the key takeaways from this legal file",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "build a python bot to automate this workflow",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "research the history of react programming",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "key takeaways from the cloud meeting",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "summarize the gaming data trends",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "translate the gaming contract obligations into german",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "draw a gui in sql",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "tldr of how html works",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "summarize this medical article using bullet points",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "tabulate the marketing metrics into a table",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "write a react script to extract text from a pdf",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "summarize the statistics research paper",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "generate an image of a marketing dashboard",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "summarize the robotics data trends briefly",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "draw me a picture of a html",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "review this marketing document clause",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "animate a 3d model of a finance",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "review the ai obligations carefully",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "tutorial on calculus basics",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "research ai translation models",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "summarize the rust documentation for this module",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "draw me a picture of a javascript",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "think step by step about this ai problem",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "translate this topology formula into french",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "derive the conclusion for this ai debate",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "draw me a picture of a javascript",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "find information about the latest gaming news",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "find papers on robotics data analysis",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "spanish translation of gaming",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "assess the gaming risk factors logically",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "what are the key takeaways from this security file",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "explain probability to a 5 year old",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "how does a python spider work on the web",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "tabulate the robotics clauses from the document",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "explain the logic of calculus to a beginner",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "pretend to be a security and write an essay",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "what is the logic flaw in this javascript code",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "calculate the integral of ai growth",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "reason through this security puzzle",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "summarize the statistics research paper",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "analyze the logic in this robotics contract",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "what happened today in robotics research",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "analyze the security analytics dashboard",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "roleplay as a python compiler in this game",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "what happened today in gaming research",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "translate this gaming essay to spanish",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "how to kill a html process",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "french translation for rust code comments",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "tabulate the cloud clauses from the document",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "write a story about a sql developer",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "what are the key metrics for security growth",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "think step by step about this finance problem",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "search the web for legal current events",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "tabulate the security metrics into a table",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "explain topology to a 5 year old",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "what is gaming in simple terms",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "derive the conclusion for this startup debate",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "pretend to be a finance and write an essay",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "design a logo for a finance company",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "how to translate cloud logically",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "what is the logic flaw in this react code",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "what is the mathematical logic behind calculus",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "how does a c++ compiler work conceptually",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "reason through this robotics puzzle",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "explain probability to a 5 year old",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "how to kill a python process",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "analyze the finance analytics dashboard",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "tabulate the medical clauses from the document",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "explain the cloud chart simply",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "summarize the history of probability",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "research the history of html programming",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "how does algebra work in data analytics",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "assess the medical risk factors logically",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "explain the ai chart simply",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "review the startup obligations carefully",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "search for marketing workflow automation tools",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "create a beautiful ui mockup for finance",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "draw a gui in react",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "what happened today in marketing research",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "how to kill a c++ process",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "what are the key takeaways from this startup file",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "summarize the react documentation for this module",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "explain ai for a 5 year old",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "logically analyze this ai document",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "reason about the sql logic error here",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "who is the creator of legal",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "what is a python object in programming",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "compose a song about ai",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "how does a html spider work on the web",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "tldr of this cloud contract",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "design a logo for a ai company",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "teach me to translate marketing into spanish",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "find information about the latest marketing news",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "plot the topology data points",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "research cloud translation models",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "summarize this cloud article using bullet points",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "calculate the mathematical complexity of this c++ algorithm",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "evaluate the medical arguments step by step",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "what are the key metrics for finance growth",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "review this marketing document clause",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "learn how to marketing step by step",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "analyze the robotics analytics dashboard",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "summarize the obligations in this robotics contract",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "graph the ai data from this csv",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "tldr of this startup contract",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "what is the difference between javascript and go",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "localization of this gaming app to german",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "what is the mathematical logic behind statistics",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "translate this legal essay to spanish",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "how does a javascript compiler work conceptually",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "logically analyze this gaming document",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "key takeaways from the gaming meeting",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "translate this medical essay to spanish",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "reason about the python logic error here",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "write a sql script to extract text from a pdf",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "how to translate legal logically",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "summarize the ai translation rules",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "translate this html script to ruby",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "calculate the mathematical complexity of this sql algorithm",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "learn how to robotics step by step",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "summarize the history of geometry",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "reason through this security puzzle",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "analyze the logic in this finance contract",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "summarize the algebra paper",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "think step by step about this robotics problem",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "logically analyze this finance document",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "teach me the math behind startup models",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "summarize the javascript documentation for this module",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "tldr of how c++ works",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "analyze the logic in this startup contract",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "what is a javascript object in programming",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "prove the statistics theorem using python",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "tldr of this cloud contract",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "key takeaways from the security meeting",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "localization of this marketing app to german",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "draw me a picture of a html",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "design a logo for a robotics company",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "search for the geometry discovery",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "write a poem about security data analysis",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "bullet points for this security logic puzzle",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "how does a html compiler work conceptually",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "research the history of rust programming",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "summarize the marketing data trends",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "translate this gaming poem to german",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "what happened today in medical research",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "analyze the logic behind this legal decision",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "tutorial on probability basics",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "assess the marketing risk factors logically",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "translate the geometry theorem to spanish",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "what are the latest trends in ai",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "explain the finance chart simply",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "design a logo for a security company",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "explain algebra to a 5 year old",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "tutorial on probability basics",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "chart the legal metrics over time",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "who is the creator of ai",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "how does probability work in data analytics",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "assess the ai risk factors logically",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "write a poem about finance data analysis",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "summarize the calculus paper",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "tldr of the c++ documentation",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "what does this medical agreement state",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "pretend to be a gaming and write an essay",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "key takeaways on topology basics",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "learn how to security step by step",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "french translation for python code comments",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "prove the topology theorem using python",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "summarize the obligations in this medical contract",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "explain the logic of calculus to a beginner",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "research the history of react programming",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "tutorial on algebra basics",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "teach me the math behind gaming models",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "write a poem about legal data analysis",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "who is the creator of robotics",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "graph the cloud data from this csv",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "summarize the cloud data trends briefly",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "bullet points for this ai logic puzzle",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "what are the key metrics for finance growth",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "what is the difference between python and swift",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "translate this ai poem to german",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "translate the geometry theorem to spanish",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "extract the security terms from this pdf",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "write a javascript script to extract text from a pdf",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "extract data from this robotics chart",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "review the sql documentation pdf",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "teach me how python works",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "localization of this ai app to german",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "explain security for a 5 year old",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "what are the key takeaways from this gaming file",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "compose a song about medical",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "teach me to translate medical into spanish",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "what is the difference between sql and go",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "bullet points for this gaming logic puzzle",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "what is startup in simple terms",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "compare the logic of python and ruby",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "compare the topology and startup theories",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "build a html bot to automate this workflow",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "derive the conclusion for this ai debate",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "generate an image of a cloud dashboard",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "what are the key takeaways from this finance file",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "summarize the history of algebra",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "prove the statistics theorem using python",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "extract data from this cloud chart",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "reason through this calculus proof",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "calculate the integral of robotics growth",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "learn how to startup step by step",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "translate the topology theorem to spanish",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "tabulate the robotics metrics into a table",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "translate this cloud essay to spanish",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "compare the statistics and medical theories",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "search for the calculus discovery",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "learn how to ai step by step",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "think step by step about this gaming problem",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "translate the c++ documentation into french",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "summarize the obligations in this startup contract",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "research legal translation models",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "roleplay as a react compiler in this game",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "who is the creator of medical",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "summarize the startup data trends",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "teach me to translate medical into spanish",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "translate this robotics data chart into french",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "how does statistics work in data analytics",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "explain the logic of statistics to a beginner",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "chart the security metrics over time",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "search for security workflow automation tools",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "write a c++ script to extract text from a pdf",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "summarize the calculus research paper",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "create a chart showing sql usage statistics",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "bullet points for this gaming logic puzzle",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "how does a html compiler work conceptually",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "what is the logic flaw in this html code",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "tldr of this startup contract",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "summarize the topology research paper",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "summarize the security data trends",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "translate the geometry theorem to spanish",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "plot the calculus data points",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "translate this ai poem to german",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "french translation for javascript code comments",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "analyze the data logic in this startup report",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "summarize the rust documentation for this module",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "extract data from this robotics chart",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "review this ai document clause",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "review the ai obligations carefully",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "pretend to be a marketing and write an essay",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "review this security document clause",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "summarize this marketing article using bullet points",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "find papers on startup data analysis",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "draw a gui in sql",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "translate this rust script to swift",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "analyze the data logic in this finance report",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "translate this legal essay to spanish",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "compare the logic of python and ruby",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "search for startup workflow automation tools",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "what is the mathematical logic behind probability",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "what are the latest trends in marketing",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "how to translate gaming logically",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "translate the react documentation into french",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "create a beautiful ui mockup for security",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "assess the finance risk factors logically",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "teach me to translate cloud into spanish",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "what are the key metrics for startup growth",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "french translation for html code comments",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "create a beautiful ui mockup for robotics",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "analyze the logic behind this security decision",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "summarize this legal article using bullet points",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "compose a song about robotics",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "translate the cloud contract obligations into german",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "what are the key metrics for security growth",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "evaluate the legal arguments step by step",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "research legal translation models",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "review the react documentation pdf",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "what are the latest trends in gaming",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "analyze the logic in this medical contract",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "reason through this calculus proof",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "tabulate the ai metrics into a table",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "teach me how python works",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "key takeaways on statistics basics",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "how does probability work in data analytics",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "compose a song about robotics",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "compare the logic of react and go",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "analyze the logic behind this security decision",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "search for finance workflow automation tools",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "summarize the algebra paper",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "derive the conclusion for this gaming debate",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "tldr of this medical contract",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "translate this legal data chart into french",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "translate this c++ script to go",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "analyze the logic in this robotics contract",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "analyze the logic behind this medical decision",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "animate a 3d model of a cloud",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "explain the startup chart simply",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "tldr of how sql works",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "find papers on cloud data analysis",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "reason about the react logic error here",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "logically analyze this marketing document",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "chart the robotics metrics over time",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "create a beautiful ui mockup for legal",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "spanish translation of legal",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "review the legal obligations carefully",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "analyze the logic behind this marketing decision",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "summarize the geometry paper",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "build a c++ bot to automate this workflow",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "derive the probability equation step by step",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "animate a 3d model of a robotics",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "roleplay as a python compiler in this game",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "search the web for legal current events",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "what does this medical agreement state",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "tabulate the cloud clauses from the document",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "search for the calculus discovery",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "translate this react script to ruby",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "search for the topology discovery",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "reason about the html logic error here",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "reason through this legal puzzle",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "analyze the data logic in this ai report",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "what is cloud in simple terms",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "translate the geometry theorem to spanish",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "create a chart showing c++ usage statistics",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "key takeaways from the robotics meeting",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "animate a 3d model of a ai",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "compose a song about startup",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "explain finance for a 5 year old",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "tldr of the sql documentation",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "search for the geometry discovery",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "graph the robotics data from this csv",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "analyze the data logic in this cloud report",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "calculate the mathematical complexity of this react algorithm",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "what are the latest trends in cloud",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "tldr of how html works",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "translate the marketing contract obligations into german",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "who is the creator of cloud",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "what is the difference between rust and php",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "summarize the finance translation rules",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "what is the logic flaw in this html code",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "summarize the legal data trends briefly",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "tldr of the react documentation",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "design a logo for a marketing company",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "summarize the obligations in this finance contract",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "calculate the mathematical complexity of this rust algorithm",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "graph the robotics data from this csv",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "reason about the javascript logic error here",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "summarize the react documentation for this module",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "find information about the latest legal news",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "what happened today in security research",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "how does a javascript spider work on the web",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "build a react bot to automate this workflow",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "analyze the data logic in this gaming report",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "write a python script to extract text from a pdf",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "summarize the obligations in this startup contract",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "what does this security agreement state",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "calculate the integral of security growth",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "write a poem about finance data analysis",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "tabulate the finance metrics into a table",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "review the html documentation pdf",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "reason through this geometry proof",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "generate an image of a medical dashboard",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "summarize the robotics data trends briefly",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "teach me to translate legal into spanish",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "search the web for marketing current events",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "tldr of the html documentation",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "chart the security metrics over time",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "what is the logic flaw in this python code",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "reason through this startup puzzle",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "search for gaming workflow automation tools",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "explain the logic of statistics to a beginner",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "spanish translation of gaming",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "what does this security agreement state",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "translate this algebra formula into french",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "find papers on finance data analysis",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "create a chart showing javascript usage statistics",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "extract data from this legal chart",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "summarize the ai data trends briefly",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "explain cloud for a 5 year old",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "localization of this security app to german",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "what is a sql object in programming",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "key takeaways on statistics basics",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "compare the algebra and finance theories",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "key takeaways on probability basics",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "key takeaways on topology basics",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "teach me how html works",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "write a story about a c++ developer",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "generate an image of a ai dashboard",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "find papers on marketing data analysis",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "reason through this probability proof",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "translate the security contract obligations into german",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "what is marketing in simple terms",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "translate this probability formula into french",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "translate the medical contract obligations into german",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "create a chart showing sql usage statistics",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "search the web for marketing current events",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "what is a sql object in programming",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "explain the logic of algebra to a beginner",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "how does a c++ compiler work conceptually",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "translate this calculus formula into french",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "translate this gaming poem to german",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "roleplay as a react compiler in this game",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "logically analyze this marketing document",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "tabulate the security clauses from the document",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "research the history of javascript programming",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "bullet points for this finance logic puzzle",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "what is the difference between rust and swift",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "write a story about a sql developer",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "translate this python script to php",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "extract the ai terms from this pdf",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "extract the gaming terms from this pdf",
+    "correct_family": "document_qa"
+  },
+  {
+    "prompt": "compare the probability and gaming theories",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "teach me the math behind gaming models",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "summarize the gaming translation rules",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "spanish translation of cloud",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "spanish translation of finance",
+    "correct_family": "translation"
+  },
+  {
+    "prompt": "create a chart showing rust usage statistics",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "draw me a picture of a sql",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "calculate the mathematical complexity of this rust algorithm",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "search the web for security current events",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "graph the legal data from this csv",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "write a story about a react developer",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "animate a 3d model of a finance",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "how does a rust spider work on the web",
+    "correct_family": "coding"
+  },
+  {
+    "prompt": "calculate the integral of startup growth",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "find information about the latest robotics news",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "evaluate the legal arguments step by step",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "explain the robotics chart simply",
+    "correct_family": "education"
+  },
+  {
+    "prompt": "find information about the latest ai news",
+    "correct_family": "research"
+  },
+  {
+    "prompt": "teach me the math behind ai models",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "key takeaways from the finance meeting",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "tldr of the javascript documentation",
+    "correct_family": "summarization"
+  },
+  {
+    "prompt": "summarize the startup data trends",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "explain geometry to a 5 year old",
+    "correct_family": "mathematics"
+  },
+  {
+    "prompt": "roleplay as a react compiler in this game",
+    "correct_family": "creative"
+  },
+  {
+    "prompt": "derive the conclusion for this startup debate",
+    "correct_family": "reasoning"
+  },
+  {
+    "prompt": "plot the statistics data points",
+    "correct_family": "data_analysis"
+  },
+  {
+    "prompt": "summarize the algebra paper",
+    "correct_family": "document_qa"
+  }
+];
     function getMemoryBank() {
       const mem = localStorage.getItem("atlasRouterMemoryBank");
-      return mem ? JSON.parse(mem) : [];
+      const localMem = mem ? JSON.parse(mem) : [];
+      return [...PRETRAINED_MEMORY, ...localMem];
     }
     
     function saveToMemoryBank(prompt, correctFamily) {
