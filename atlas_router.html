@@ -9,7 +9,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.21/mammoth.browser.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/4.0.2/tesseract.min.js"></script>
-  
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #07111f;
@@ -28,8 +28,12 @@
       --shadow: 0 24px 70px rgba(0, 0, 0, 0.38);
       --radius-xl: 28px;
       --radius-md: 14px;
-      --sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      --sans: 'Outfit', Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
     * { box-sizing: border-box; }
     body {
       margin: 0; background-color: var(--bg); color: var(--text);
@@ -41,6 +45,11 @@
       height: 100vh;
       height: 100dvh;
       overflow: hidden;
+      animation: breatheBg 15s ease-in-out infinite alternate;
+    }
+    @keyframes breatheBg {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 100% 100%; }
     }
     h1, h2, h3, h4 { margin: 0; font-weight: 700; letter-spacing: -0.02em; }
     button, input, select, textarea { font-family: inherit; color: inherit; }
@@ -53,12 +62,12 @@
     .pill { background: var(--card); border: 1px solid var(--border); padding: 6px 14px; border-radius: 99px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
     
     .layout { display: grid; grid-template-columns: minmax(320px, 420px) minmax(0, 1fr); gap: 32px; padding: 32px; max-width: 1600px; margin: 0 auto; width: 100%; align-items: start; flex: 1; overflow: hidden; }
-    .panel { background: var(--panel); backdrop-filter: blur(24px); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 32px; box-shadow: var(--shadow); height: 100%; overflow-y: auto; }
+    .panel { background: var(--panel); backdrop-filter: blur(24px); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 32px; box-shadow: 0 4px 24px -4px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.1); height: 100%; overflow-y: auto; transition: box-shadow 0.3s; }
     
     .form-group { margin-bottom: 24px; }
     .form-group label { display: block; font-size: 12px; font-weight: 600; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
-    input[type="text"], input[type="number"], select, textarea { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 14px 16px; font-size: 14px; transition: all 0.2s; }
-    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); background: rgba(0,0,0,0.5); }
+    input[type="text"], input[type="number"], select, textarea { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 14px 16px; font-size: 14px; transition: all 0.3s ease; }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--accent); background: rgba(0,0,0,0.5); box-shadow: 0 0 0 3px rgba(105, 227, 255, 0.15); }
     textarea { resize: vertical; min-height: 120px; }
     
     .btn { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #000; border: none; padding: 16px 24px; border-radius: var(--radius-md); font-weight: 700; font-size: 16px; cursor: pointer; width: 100%; transition: all 0.3s; }
@@ -71,15 +80,16 @@
     .accordion.open .accordion-content { display: block; }
     .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     
-    .file-drop { border: 2px dashed var(--border-2); border-radius: var(--radius-md); padding: 32px 20px; text-align: center; background: rgba(0,0,0,0.2); cursor: pointer; }
-    .file-drop:hover, .file-drop.dragover { border-color: var(--accent); background: rgba(105, 227, 255, 0.05); }
+    .file-drop { border: 2px dashed var(--border-2); border-radius: var(--radius-md); padding: 32px 20px; text-align: center; background: rgba(0,0,0,0.2); cursor: pointer; transition: all 0.3s ease; }
+    .file-drop:hover, .file-drop.dragover { border-color: var(--accent); background: rgba(105, 227, 255, 0.05); transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
     .check-row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
     .check-row input[type="checkbox"] { width: 18px; height: 18px; }
     .file-item { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 10px 16px; border-radius: var(--radius-md); font-size: 13px; margin-bottom: 6px; }
     
     .main-content { min-width: 0; height: 100%; overflow-y: auto; padding-right: 16px; padding-bottom: 32px; }
     .decision-hero { display: grid; grid-template-columns: minmax(0, 2fr) minmax(240px, 1fr); gap: 24px; margin-bottom: 32px; scroll-margin-top: 20px; }
-    .selected-card, .chart-card { background: linear-gradient(145deg, rgba(30,41,59,0.5), rgba(15,23,42,0.8)); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 40px; box-shadow: var(--shadow); min-width: 0; }
+    .selected-card, .chart-card { background: linear-gradient(145deg, rgba(30,41,59,0.5), rgba(15,23,42,0.8)); border: 1px solid var(--border); border-radius: var(--radius-xl); padding: 40px; box-shadow: 0 20px 40px -10px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.15); min-width: 0; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+    .selected-card:hover, .chart-card:hover { transform: translateY(-4px); box-shadow: 0 30px 60px -12px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.2); }
     .status-row { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 18px; }
     .selected-model { font-size: clamp(28px, 4vw, 48px); line-height: 1.05; overflow-wrap: anywhere; margin-bottom: 12px; }
     .selected-meta { color: var(--muted); font-size: 16px; margin: 0 0 32px; }
@@ -105,11 +115,16 @@
     .badge.warn { background: rgba(251, 191, 36, 0.15); color: var(--warning); border: 1px solid rgba(251, 191, 36, 0.3); }
     .badge.danger { background: rgba(251, 113, 133, 0.15); color: var(--danger); border: 1px solid rgba(251, 113, 133, 0.3); }
     .table-wrap { overflow-x: auto; }
+    @property --p {
+      syntax: '<angle>';
+      inherits: false;
+      initial-value: 0deg;
+    }
     .rank { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: rgba(255,255,255,0.06); font-weight: 700; }
-    .gauge { width: 180px; aspect-ratio: 1; margin: 8px auto 0; border-radius: 50%; display: grid; place-items: center; background: conic-gradient(var(--accent) var(--p), rgba(255,255,255,0.08) 0); position: relative; }
-    .gauge::before { content: ""; position: absolute; inset: 16px; border-radius: 50%; background: var(--bg-2); border: 1px solid var(--border); }
+    .gauge { width: 180px; aspect-ratio: 1; margin: 8px auto 0; border-radius: 50%; display: grid; place-items: center; background: conic-gradient(var(--accent) var(--p), rgba(255,255,255,0.08) 0); position: relative; transition: --p 1.5s cubic-bezier(0.22, 1, 0.36, 1); }
+    .gauge::before { content: ""; position: absolute; inset: 16px; border-radius: 50%; background: var(--bg-2); border: 1px solid var(--border); box-shadow: inset 0 2px 10px rgba(0,0,0,0.5); }
     .gauge-content { position: relative; z-index: 1; display: grid; gap: 4px; text-align: center; }
-    .gauge-content strong { font-size: 30px; }
+    .gauge-content strong { font-size: 30px; text-shadow: 0 0 20px rgba(105, 227, 255, 0.4); }
     .gauge-content span { color: var(--muted); font-size: 12px; }
     @media (max-width: 980px) {
       .topbar { padding: 16px; flex-direction: column; align-items: flex-start; gap: 12px; height: auto; }
