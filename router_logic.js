@@ -1344,7 +1344,7 @@
           
           <div class="chart-card" style="text-align: center; display: flex; flex-direction: column; justify-content: center;">
             <h3 style="margin:0 0 10px; font-size:15px; letter-spacing:-0.02em;">Thompson Confidence</h3>
-            <div class="gauge" style="--p: ${confDeg}deg;">
+            <div class="gauge" id="mainGauge" style="--p: 0deg;" data-target="${confDeg}">
               <div class="gauge-content">
                 <strong>${confPct}%</strong>
                 <span>margin +${(plan.confidence_margin * 100).toFixed(1)}%</span>
@@ -1404,6 +1404,13 @@
       
       res.innerHTML = h;
       res.scrollIntoView({ behavior: "smooth", block: "start" });
+      
+      setTimeout(() => {
+        const g = document.getElementById('mainGauge');
+        if(g) {
+          g.style.setProperty('--p', g.getAttribute('data-target') + 'deg');
+        }
+      }, 50);
     }
 
     document.getElementById("routerForm").addEventListener("submit", async e => {
