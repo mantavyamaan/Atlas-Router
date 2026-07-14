@@ -63,6 +63,39 @@
         "perf:instruction_following": 0.20
       }
     };
+    // === MEMORY BANK (Evolving Parser) ===
+    function getMemoryBank() {
+      const mem = localStorage.getItem("atlasRouterMemoryBank");
+      return mem ? JSON.parse(mem) : [];
+    }
+    
+    function saveToMemoryBank(prompt, correctFamily) {
+      if(!prompt || !prompt.trim()) return;
+      const mem = getMemoryBank();
+      const existing = mem.find(m => m.prompt === prompt);
+      if(existing) {
+        existing.correct_family = correctFamily;
+        existing.timestamp = Date.now();
+      } else {
+        mem.push({ prompt, correct_family: correctFamily, timestamp: Date.now() });
+      }
+      localStorage.setItem("atlasRouterMemoryBank", JSON.stringify(mem));
+    }
+    
+    function tokenize(text) {
+      return new Set(text.toLowerCase().replace(/[^a-z0-9\s]/g, "").split(/\s+/).filter(w => w.length > 2));
+    }
+    
+    function jaccardSimilarity(text1, text2) {
+      const set1 = tokenize(text1);
+      const set2 = tokenize(text2);
+      if (set1.size === 0 && set2.size === 0) return 1.0;
+      if (set1.size === 0 || set2.size === 0) return 0.0;
+      const intersection = new Set([...set1].filter(x => set2.has(x)));
+      const union = new Set([...set1, ...set2]);
+      return intersection.size / union.size;
+    }
+
     const DOMAIN_SAFETY_MAP = {
       medical: "medical", legal: "legal", finance: "finance", security: "cybersecurity",
       general: "general", software: "general", science: "general", research: "general",
@@ -467,6 +500,19 @@
           if (p.includes(kw)) {
             intentScores[intent] = (intentScores[intent] || 0) + weight;
           }
+        }
+      }
+
+      // --- Evolving Parser: Dynamic Memory Injection ---
+      const mem = getMemoryBank();
+      let memBoosted = false;
+      for (const m of mem) {
+        const sim = jaccardSimilarity(p, m.prompt);
+        if (sim > 0.6) {
+          intentScores[m.correct_family] = (intentScores[m.correct_family] || 0) + 10.0;
+          reasonParts.push(`Dynamic Memory Injection: Matched historical edge-case (${(sim*100).toFixed(0)}% sim), overriding intent to ${m.correct_family}`);
+          memBoosted = true;
+          break;
         }
       }
 
@@ -1400,6 +1446,30 @@
             </table>
           </div>
         </div>
+        
+        <div class="panel" style="margin-top: 32px; border: 1px solid var(--accent); background: rgba(105, 227, 255, 0.05);">
+          <div class="section-title" style="margin-bottom: 16px;">
+            <h3 style="color: var(--accent);">🧠 Train the Router</h3>
+            <p style="margin: 0; font-size: 13px; color: var(--muted);">Did Atlas route this incorrectly? Save a correction to the Local Memory Bank to evolve the parser.</p>
+          </div>
+          <div style="display: flex; gap: 16px; align-items: center; flex-wrap: wrap;">
+            <select id="feedbackFamily" style="flex: 1; min-width: 200px;">
+              <option value="coding">Coding</option>
+              <option value="creative">Creative</option>
+              <option value="mathematics">Mathematics</option>
+              <option value="reasoning">Reasoning</option>
+              <option value="research">Research</option>
+              <option value="education">Education</option>
+              <option value="data_analysis">Data Analysis</option>
+              <option value="document_qa">Document Q&A</option>
+              <option value="translation">Translation</option>
+              <option value="summarization">Summarization</option>
+              <option value="agent">Agent/Workflow</option>
+              <option value="chat">General Chat</option>
+            </select>
+            <button id="submitFeedbackBtn" class="btn" style="width: auto; padding: 14px 24px; margin: 0;">Submit Correction</button>
+          </div>
+        </div>
       `;
       
       res.innerHTML = h;
@@ -1409,6 +1479,18 @@
         const g = document.getElementById('mainGauge');
         if(g) {
           g.style.setProperty('--p', g.getAttribute('data-target') + 'deg');
+        }
+        
+        const btn = document.getElementById("submitFeedbackBtn");
+        if(btn) {
+          btn.addEventListener("click", () => {
+            const correctFamily = document.getElementById("feedbackFamily").value;
+            saveToMemoryBank(dec.task.prompt, correctFamily);
+            btn.innerText = "Saved!";
+            btn.style.background = "var(--success)";
+            btn.style.color = "#fff";
+            setTimeout(() => { btn.innerText = "Submit Correction"; btn.style.background = ""; btn.style.color = ""; }, 2000);
+          });
         }
       }, 50);
     }
