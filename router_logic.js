@@ -2072,17 +2072,25 @@ const PRETRAINED_MEMORY = [
       return [...PRETRAINED_MEMORY, ...localMem];
     }
     
-    function saveToMemoryBank(prompt, correctFamily) {
+    function saveToMemoryBank(prompt, correctFamily, complexity) {
       if(!prompt || !prompt.trim()) return;
       const mem = getMemoryBank();
-      const existing = mem.find(m => m.prompt === prompt);
+      
+      // Filter out PRETRAINED_MEMORY items so we don't accidentally overwrite them into localStorage
+      const localOnly = mem.filter(m => !PRETRAINED_MEMORY.some(p => p.prompt === m.prompt));
+      
+      const existing = localOnly.find(m => m.prompt === prompt);
       if(existing) {
-        existing.correct_family = correctFamily;
+        if(correctFamily) existing.correct_family = correctFamily;
+        if(complexity && complexity !== "auto") existing.complexity = complexity;
         existing.timestamp = Date.now();
       } else {
-        mem.push({ prompt, correct_family: correctFamily, timestamp: Date.now() });
+        const entry = { prompt, timestamp: Date.now() };
+        if(correctFamily) entry.correct_family = correctFamily;
+        if(complexity && complexity !== "auto") entry.complexity = complexity;
+        localOnly.push(entry);
       }
-      localStorage.setItem("atlasRouterMemoryBank", JSON.stringify(mem));
+      localStorage.setItem("atlasRouterMemoryBank", JSON.stringify(localOnly));
     }
     
     function tokenize(text) {
@@ -2509,12 +2517,17 @@ const PRETRAINED_MEMORY = [
       // --- Evolving Parser: Dynamic Memory Injection ---
       const mem = getMemoryBank();
       let memBoosted = false;
+      let memBoostedComplexity = null;
       for (const m of mem) {
         const sim = jaccardSimilarity(p, m.prompt);
         if (sim > 0.6) {
           intentScores[m.correct_family] = (intentScores[m.correct_family] || 0) + 10.0;
           reasonParts.push(`Dynamic Memory Injection: Matched historical edge-case (${(sim*100).toFixed(0)}% sim), overriding intent to ${m.correct_family}`);
           memBoosted = true;
+          if (m.complexity) {
+            memBoostedComplexity = m.complexity;
+            reasonParts.push(`Dynamic Memory Injection: Overriding complexity to ${m.complexity}`);
+          }
           break;
         }
       }
@@ -2634,6 +2647,7 @@ const PRETRAINED_MEMORY = [
       return {
         primary_family: primary,
         secondary_families: secondary,
+        forced_complexity: memBoostedComplexity,
         required_stages: requiredStages,
         workflow_graph: workflowGraph,
         domain,
@@ -2717,7 +2731,10 @@ const PRETRAINED_MEMORY = [
       if (soft.risk_tier === "high" || soft.risk_tier === "critical") comp_score += 1;
       if (soft.required_stages.length > 1) comp_score += 1;
       
-      const complexity = comp_score >= 3 ? "high" : comp_score >= 1 ? "medium" : "low";
+      let complexity = soft.forced_complexity;
+      if (!complexity) {
+        complexity = comp_score >= 3 ? "high" : comp_score >= 1 ? "medium" : "low";
+      }
       const workflowProfile = inferWorkflowProfile(soft.primary_family, soft.domain, inputFormats, args.prompt, complexity, soft.risk_tier);
       const requiresVerifier = hard.requires_verifier || soft.needs_verification || soft.risk_tier === "high" || rc.mandatory_verifier;
       const safetySensitive = soft.risk_tier === "high" || ["regulated_advice", "security_sensitive"].includes(soft.risk_type);
@@ -3470,6 +3487,12 @@ const PRETRAINED_MEMORY = [
               <option value="agent">Agent/Workflow</option>
               <option value="chat">General Chat</option>
             </select>
+            <select id="feedbackComplexity" style="flex: 1; min-width: 150px;">
+              <option value="auto">Auto Complexity</option>
+              <option value="low">Low Complexity</option>
+              <option value="medium">Medium Complexity</option>
+              <option value="high">High Complexity</option>
+            </select>
             <button id="submitFeedbackBtn" class="btn" style="width: auto; padding: 14px 24px; margin: 0;">Submit Correction</button>
           </div>
         </div>
@@ -3488,7 +3511,8 @@ const PRETRAINED_MEMORY = [
         if(btn) {
           btn.addEventListener("click", () => {
             const correctFamily = document.getElementById("feedbackFamily").value;
-            saveToMemoryBank(dec.task.prompt, correctFamily);
+            const complexity = document.getElementById("feedbackComplexity").value;
+            saveToMemoryBank(dec.task.prompt, correctFamily, complexity);
             btn.innerText = "Saved!";
             btn.style.background = "var(--success)";
             btn.style.color = "#fff";
