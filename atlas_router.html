@@ -139,24 +139,28 @@
       .gauge { width: 140px; }
     }
     @media (max-width: 480px) {
-      .kpi-grid { grid-template-columns: 1fr; }
+      .kpi-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
       .topbar-stats { flex-direction: column; align-items: flex-start; gap: 8px; width: 100%; }
+      .topbar-stats .pill { width: 100%; justify-content: center; }
       .modal { width: 95vw; }
-      .modal-header, .modal-controls, .modal-body { padding: 12px; }
-      .conf-bar-row { grid-template-columns: 60px auto; gap: 8px; }
-      th, td { padding: 12px 6px; font-size: 11px; }
-      .table-wrap table { table-layout: fixed; }
-      th:nth-child(1) { width: 44px; }
-      th:nth-child(2) { width: auto; }
-      th:nth-child(3) { width: 110px; }
-      th:nth-child(4) { width: 65px; }
-      td:nth-child(2) { word-wrap: break-word; overflow-wrap: break-word; word-break: break-all; white-space: normal; }
+      .modal-header, .modal-controls, .modal-body { padding: 16px; }
+      
+      /* Mobile Table Scrolling */
+      .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 0 -12px; padding: 0 12px; }
+      .table-wrap table { table-layout: auto; min-width: 450px; }
+      th, td { padding: 12px 10px; font-size: 12px; white-space: nowrap; }
+      .conf-bar-row { grid-template-columns: 100px auto; gap: 12px; }
+      
       .kpi { padding: 12px; }
       .kpi strong { font-size: 20px; }
-      .selected-model { font-size: 26px; }
-      .selected-card { padding: 16px; }
-      .panel { padding: 12px; }
-      .hero-card { padding: 16px; }
+      .selected-model { font-size: 28px; }
+      .selected-card { padding: 20px; }
+      .panel { padding: 16px; border-radius: 20px; }
+      .hero-card { padding: 20px; }
+      
+      /* Full width buttons on mobile */
+      #submitFeedbackBtn { width: 100% !important; }
+      #feedbackFamily, #feedbackComplexity { min-width: 100% !important; }
     }
     
     .toast { position: fixed; bottom: 24px; right: 24px; background: rgba(15, 29, 50, 0.95); border: 1px solid var(--border); padding: 16px 24px; border-radius: 14px; box-shadow: var(--shadow); z-index: 1000; transition: all 0.3s; }
