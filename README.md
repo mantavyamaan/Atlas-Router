@@ -1,6 +1,8 @@
 # Atlas Router – Intelligent LLM Routing Control Plane
 
-A production-oriented LLM routing control plane that intelligently selects and orchestrates the optimal AI model workflow using structured task understanding, policy enforcement, runtime telemetry, Bayesian quality estimation, and multi-objective optimization.
+> **Note:** Atlas Router is the original prototype. Its successor, **[Neural Gateway](https://github.com/mantavyamaan/Neural-Gateway)**, is the actively developed version — a FastAPI service with live model pricing and benchmark sync, a trained semantic parser, and a 65% lower end-to-end routing latency.
+
+A prototype LLM routing control plane that intelligently selects and orchestrates the optimal AI model workflow using structured task understanding, policy enforcement, runtime telemetry, Bayesian quality estimation, and multi-objective optimization.
 
 You can access the model here: [Atlas Router](https://mantavyamaan.github.io/Atlas-Router/atlas_router.html)
 
@@ -19,6 +21,8 @@ A zero-dependency, mathematically deterministic engine. All heavy data-science l
 ---
 
 ## 🧠 101-Model 2026 Registry
+
+> **Simulated data:** the values in `model_registry.py` (benchmark scores, latency profiles, domain scores, context windows, win/loss counts) are synthetic, generated to exercise the routing logic. They are not measured results. Neural Gateway replaces this with live data synced from OpenRouter and Hugging Face.
 
 Both V1 and V2 pull from a centralized `model_registry.py` featuring 101 cutting-edge frontier and open-weight models (including `GPT-5.5`, `Claude-Opus-4.8`, `Gemini-3.1-Pro`, `Llama-4-Maverick`, `DeepSeek-V4-Pro`, and `o3`).
 - **2026-Era Specs**: Models are parameterized with up to 10M+ context windows.
